@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div id = "start">
+    <h1>Welcome to Rock-Paper-Scissors!</h1>
+
+    <button style = "border-radius: 8px": onClick = "resetScore()">Reset Score</button>
+    <p id = "playerScore">Player: 0</p>
+    <p id = "compScore">Computer: 0</p>
+    
+    <h3>Choose your weapon:</h3>
+    <button style = "border-radius: 8px": onClick = "rock()">Rock</button>
+    <button style = "border-radius: 8px": onClick = "paper()">Paper</button>
+    <button style = "border-radius: 8px": onClick = "scissors()">Scissors</button>
+  </div>
+
+  <br>
+  <div id = "end">
+    <h2 id = "result"></h2>
+    <button id = "retryButton": style = "border-radius: 8px": onClick = "retry()">Retry</button>
+  
+    <p id = "userChoice"></p>
+    <img id = "userPic" style = "max-height: 150px; max-width: 150px">
+    <br>
+    <p id = "compChoice"></p>
+    <img id = "compPic" style = "max-height: 150px; max-width: 150px">
+  </div>
+
+  
+  <script src="script.js"></script>
+
+  <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
+</body>
+
+</html>
