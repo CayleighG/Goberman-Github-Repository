@@ -1,0 +1,263 @@
+body {
+    background-image: linear-gradient(rgb(255, 201, 201), rgb(255, 86, 86));
+    background-attachment: fixed;
+    font-family:'Times New Roman', Times, serif;
+}
+
+#logoBar {
+    background-image: url('https://brightspace.marist.edu/d2l/api/lp/1.9/courses/6606/image?height=300&width=1200&versionNumber=55db18fa-0f1c-4963-a261-a3f951bd2e89');
+    background-size: cover;
+    background-position: center;
+    border-bottom: black solid 3px;
+    padding: 1%;
+    position: relative;
+    right: 2%;
+    bottom: 8px;
+    width: 101%;
+}
+
+#maristParkingLogo {
+    width: 30%;
+    height: 75%;
+    border-radius: 25%;
+    position: relative;
+    left: 10px;
+    top: 5px;
+    border: 2px solid black;
+}
+
+#title {
+    font-size: 60px;
+    position: relative;
+    left: 10px;
+    bottom: 15px;
+    text-shadow: 2px 2px red;
+}
+
+#whitespace {
+    background-color: white;
+    width: 40%;
+    border-radius: 10px;
+    border: solid black 2px;
+    position: relative;
+    left: 10px;
+    padding: 5px;
+}
+
+#aboutBar {
+    background: white;
+    position: relative;
+    bottom: 20px;
+    right: 2%;
+    width: 102%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    bottom: 30px;
+    border-bottom: 3px solid black;
+    border-top: 3px solid black;
+}
+
+.aboutButtons {
+    background-color: white;
+    border: 1px solid white;
+    text-align: center;
+    padding-left: 5px; 
+    padding-right: 5px;
+    min-width: 150px; 
+    height: 50px;
+    font-size: 24px;
+    font-family:'Times New Roman', Times, serif;
+}
+
+.aboutButtons:hover {
+    background-color: lightgrey;
+}
+
+.alert {
+    background-color: red;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.lowerInfoBoxes {
+    background-color: lightgrey;
+    width: 75%;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    padding-top: 2%;
+    text-align: center;
+}
+
+.leftImage {
+    background-color: white; 
+    width: 15%; 
+    height: 15%; 
+    float: left; 
+    margin-right: 20px; 
+    border: 1px groove maroon; 
+    border-radius: 10px;
+}
+
+.rightImage {
+    background-color: white; 
+    width: 15%; 
+    height: 15%; 
+    float: right; 
+    margin-left: 20px; 
+    border: 1px groove maroon; 
+    border-radius: 10px;
+}
+
+.returnToHome {
+    background-color: white;
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    padding: 5px;
+    position: relative;
+    bottom: 40px;
+}
+
+.returnToHome:hover {
+    background-color: maroon;
+    color: white;
+}
+
+.collapse {
+    background-color: red;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    border: 2px solid black;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 0;
+}
+
+/* .active allows the button to stay this color as long as the collapsible section is open */
+.active, .collapse:hover {
+    background-color: lightgrey;
+}
+
+.collapseContent {
+    padding: 0 18px;
+    background-color: white;
+    /* Animates collapse */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    border: 2px solid black;
+
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 0;
+}
+
+.collapsePhotos {
+    float: left;
+    /* margin: top right bottom left; */
+    margin: 20px 20px 20px 0px;
+    width: 30%;
+    height: 30%;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.goToAvailableButton {
+    background-color: white;
+    float: left;
+    width: 300px;
+    height: 60px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-left: 5%;
+    margin-bottom: 10px;
+}
+
+.goToAvailableButton:hover {
+    background-color: maroon;
+    color: white;
+}
+
+.studentColumn {
+    float: right; 
+    width: 30%; 
+    background-color: lightgrey; 
+    border: 2px solid black; 
+    border-radius: 5px; 
+    padding: 10px; 
+    margin-top: 10px; 
+    margin-bottom: 10px;
+}
+
+.facultyColumn {
+    float: right; 
+    width: 30%; 
+    margin-right: 30px; 
+    background-color: lightgrey; 
+    border: 2px solid black; 
+    border-radius: 5px; 
+    padding: 10px; 
+    margin-top: 10px; 
+    margin-bottom: 10px;
+}
+
+.totalSpaces {
+    float: left; 
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: lightgrey;
+    margin-left: 8%;
+    padding: 20px;
+}
+
+.freeSpaces {
+    float: right; 
+    width: 50%; 
+    background-color: lightgrey; 
+    border: 2px solid black; 
+    border-radius: 5px; 
+    padding: 10px; 
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    margin-right: 8%;
+}
+
+.reserveButton {
+    float: right;
+    margin-right: 10px;
+    position: relative;
+    bottom: 20px;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+}
+
+.reserveButton:hover {
+    background-color: maroon;
+    color: white;
+}
+
+.individualSpace {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    /* margin: top right bottom left; */
+    margin: auto 5px auto 5px;
+}

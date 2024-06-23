@@ -1,0 +1,147 @@
+{
+    "parkingLots": {
+        "McCann": {
+            "map": "mcCannMap.jpg",
+            "parkingSpaces": {
+                "space1": {
+                    "type": "Faculty/Staff",
+                    "location": "Section A",
+                    "handicap": "Yes",
+                    "status": "Available",
+                    "reservedDate": null,
+                    "timeReservedFor": null
+                },
+                "space2": {
+                    "type": "Faculty/Staff",
+                    "location": "Section A",
+                    "handicap": "Yes",
+                    "status": "Reserved",
+                    "reservedDate": "04/30/2024",
+                    "timeReservedFor": "8:00 am - 5:00 pm"
+                },
+                "space3": {
+                    "type": "Faculty/Staff",
+                    "location": "Section B",
+                    "handicap": "No",
+                    "status": "Filled",
+                    "reservedDate": "04/28/2024",
+                    "timeReservedFor": "12:00 pm - 3:00 pm"
+                },
+                "space4": {
+                    "type": "Faculty/Staff",
+                    "location": "Section B",
+                    "handicap": "No",
+                    "status": "Available",
+                    "reservedDate": null,
+                    "timeReservedFor": null
+                },
+                "space5": {
+                    "type": "Faculty/Staff",
+                    "location": "Section C",
+                    "handicap": "No",
+                    "status": "Reserved",
+                    "reservedDate": "04/30/2024",
+                    "timeReservedFor": "9:00 am - 6:00 pm"
+                },
+                "space6": {
+                    "type": "Faculty/Staff",
+                    "location": "Section C",
+                    "handicap": "Yes",
+                    "status": "Available",
+                    "reservedDate": null,
+                    "timeReservedFor": null
+                },
+                "space7": {
+                    "type": "Student",
+                    "location": "Section A",
+                    "handicap": "Yes",
+                    "status": "Filled",
+                    "reservedDate": "04/29/2024",
+                    "timeReservedFor": "10:00 am - 1:00 pm"
+                },
+                "space8": {
+                    "type": "Student",
+                    "location": "Section B",
+                    "handicap": "Yes",
+                    "status": "Reserved",
+                    "reservedDate": "04/30/2024",
+                    "timeReservedFor": "1:00 pm - 6:30 pm"
+                },
+                "space9": {
+                    "type": "Student",
+                    "location": "Section C",
+                    "handicap": "No",
+                    "status": "Available",
+                    "reservedDate": null,
+                    "timeReservedFor": null
+                },
+                "space10": {
+                    "type": "Student",
+                    "location": "Section A",
+                    "handicap": "No",
+                    "status": "Available",
+                    "reservedDate": null,
+                    "timeReservedFor": null
+                },
+                "space11": {
+                    "type": "Student",
+                    "location": "Section B",
+                    "handicap": "No",
+                    "status": "Filled",
+                    "reservedDate": "04/28/2024",
+                    "timeReservedFor": "8:00 am - 10:30 am"
+                },
+                "space12": {
+                    "type": "Student",
+                    "location": "Section C",
+                    "handicap": "No",
+                    "status": "Available",
+                    "reservedDate": null,
+                    "timeReservedFor": null
+                }
+            },
+            "totalSpaces": "100",
+            "comments": "One of the busiest parking lots. Especially packed during sports events."
+        },
+        "Donnelly": {
+            "map": "donnellyMap.jpg",
+            "parkingSpaces": {
+    
+            },
+            "totalSpaces": "60",
+            "comments": "The go-to parking lot when McCann overflows. Generally in a busy area."
+        },
+        "Midrise": {
+            "map": "midriseMap.jpg",
+            "parkingSpaces": {
+    
+            },
+            "totalSpaces": "50",
+            "comments": "Close to the Student Center"
+        },
+        "Riverview": {
+            "map": "riverviewMap.jpg",
+            "parkingSpaces": {
+    
+            },
+            "totalSpaces": "60",
+            "comments": "Closest parking lot to the river"
+        },
+        "Fontaine": {
+            "map": "fontaineMap.jpg",
+            "parkingSpaces": {
+    
+            },
+            "totalSpaces": "30",
+            "comments": "Fills up quickly due to the current unavailability of the Dyson parking lot."
+        },
+        "Beck West": {
+            "map": "beckWestMap.jpg",
+            "parkingSpaces": {
+    
+            },
+            "totalSpaces": "40",
+            "comments": "Close to Steel Plant and Allied Health"
+        }
+    }
+} 
