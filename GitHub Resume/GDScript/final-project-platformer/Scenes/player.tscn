@@ -1,0 +1,711 @@
+[gd_scene load_steps=93 format=3 uid="uid://gnlkxwprkq2k"]
+
+[ext_resource type="Texture2D" uid="uid://hmq0d28p31ty" path="res://PNGs/Player/Idle 1.png" id="1_ph7n1"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_t4g6b"]
+[ext_resource type="Texture2D" uid="uid://bfawdrsqb77dn" path="res://PNGs/Player Healing Effect/Healing Effect-1.png.png" id="2_05vpe"]
+[ext_resource type="Texture2D" uid="uid://dxns3k8i7ufu1" path="res://PNGs/Player/Idle 2.png" id="2_lgjsw"]
+[ext_resource type="Texture2D" uid="uid://cs4brtk5wpjtp" path="res://PNGs/Player/Idle 3.png" id="3_fyoyo"]
+[ext_resource type="Texture2D" uid="uid://dbsqdgsmr67wj" path="res://PNGs/Player Healing Effect/Healing Effect-2.png.png" id="3_t7p8f"]
+[ext_resource type="Texture2D" uid="uid://uq03knfa7sku" path="res://PNGs/Player/Idle 4.png" id="4_ochj3"]
+[ext_resource type="Texture2D" uid="uid://dw08lmt82qbdr" path="res://PNGs/Player Healing Effect/Healing Effect-3.png.png" id="4_spk55"]
+[ext_resource type="Texture2D" uid="uid://b5a36ivifc07b" path="res://PNGs/Player/Player Damaged 3.png" id="4_uh0hn"]
+[ext_resource type="Texture2D" uid="uid://bwiuvg346kkhe" path="res://PNGs/Player Healing Effect/Healing Effect-4.png.png" id="5_karhk"]
+[ext_resource type="Texture2D" uid="uid://png3nb6nhv4t" path="res://PNGs/Player/Idle 5.png" id="5_ojanr"]
+[ext_resource type="Texture2D" uid="uid://dujgiwcpvq5pm" path="res://PNGs/Player Healing Effect/Healing Effect-5.png.png" id="6_dfvb4"]
+[ext_resource type="Texture2D" uid="uid://e46x1ppedvm1" path="res://PNGs/Player/Idle 6.png" id="6_vnuye"]
+[ext_resource type="Texture2D" uid="uid://drc33ikki0bnl" path="res://PNGs/Player/Idle 7.png" id="7_cvuk1"]
+[ext_resource type="Texture2D" uid="uid://cq5y6ik8kymxo" path="res://PNGs/Player Healing Effect/Healing Effect-6.png.png" id="7_oowyt"]
+[ext_resource type="Texture2D" uid="uid://d20hyfpl1k5d3" path="res://PNGs/Player Healing Effect/Healing Effect-7.png.png" id="8_giahr"]
+[ext_resource type="Texture2D" uid="uid://druhglu2ir3hw" path="res://PNGs/Player/Idle 8.png" id="8_yewb7"]
+[ext_resource type="Texture2D" uid="uid://cuvoecuwrc6cd" path="res://PNGs/Player/Idle 9.png" id="9_imnjr"]
+[ext_resource type="Texture2D" uid="uid://chlf6x18komuo" path="res://PNGs/Player Healing Effect/Healing Effect-8.png.png" id="9_pq1du"]
+[ext_resource type="Texture2D" uid="uid://dlrquroq0p53o" path="res://PNGs/Player/Idle 10.png" id="10_lobx6"]
+[ext_resource type="Texture2D" uid="uid://ttrgqx63ksfn" path="res://PNGs/Player Healing Effect/Healing Effect-9.png.png" id="10_q0uut"]
+[ext_resource type="Texture2D" uid="uid://bhgldyl67gt3f" path="res://PNGs/Player Healing Effect/Healing Effect-10.png.png" id="11_w453o"]
+[ext_resource type="Texture2D" uid="uid://ce247xtbs0r31" path="res://PNGs/Player Healing Effect/Healing Effect-11.png.png" id="12_hjkrp"]
+[ext_resource type="Texture2D" uid="uid://bdrt1vlk8y1yy" path="res://PNGs/Player/Jump 1.png" id="12_ldi07"]
+[ext_resource type="Texture2D" uid="uid://lqydqhxof2pl" path="res://PNGs/Player Healing Effect/Healing Effect-12.png.png" id="13_dus3d"]
+[ext_resource type="Texture2D" uid="uid://cued7bayi4na1" path="res://PNGs/Player/Jump 2.png" id="13_vg0ry"]
+[ext_resource type="Texture2D" uid="uid://bjc5amkmv3m1a" path="res://PNGs/Player Healing Effect/Healing Effect-13.png.png" id="14_a3kva"]
+[ext_resource type="Texture2D" uid="uid://cumi5t4fwxcms" path="res://PNGs/Player/Jump 3.png" id="14_rxxfk"]
+[ext_resource type="Texture2D" uid="uid://cr6soinq0po0w" path="res://PNGs/Player Healing Effect/Healing Effect-14.png.png" id="15_1i542"]
+[ext_resource type="Texture2D" uid="uid://b2f0cseqeeduy" path="res://PNGs/Player/Jump 4.png" id="15_080er"]
+[ext_resource type="Texture2D" uid="uid://dh6xnbds7yecr" path="res://PNGs/Player Healing Effect/Healing Effect-15.png.png" id="16_5poub"]
+[ext_resource type="Texture2D" uid="uid://wsre5kaeb5i8" path="res://PNGs/Player/Player Death 1.png" id="18_0o08h"]
+[ext_resource type="Texture2D" uid="uid://b13gr7uc3p5as" path="res://PNGs/Player/Player Death 2.png" id="19_hkrhy"]
+[ext_resource type="Texture2D" uid="uid://god05gumkilb" path="res://PNGs/Player/Player Death 3.png" id="20_c0pv6"]
+[ext_resource type="Texture2D" uid="uid://dy3nnmpc0eq30" path="res://PNGs/Health Bar/Full Health.png" id="21_ec235"]
+[ext_resource type="Texture2D" uid="uid://t4prkd8e7kk5" path="res://PNGs/Player/Player Death 4.png" id="21_hs7r3"]
+[ext_resource type="Texture2D" uid="uid://d2of3c4b0tiw" path="res://PNGs/Health Bar/Damage 1 (Red).png" id="21_s3wmb"]
+[ext_resource type="Texture2D" uid="uid://bsejgbn8otkns" path="res://PNGs/Health Bar/Full Health Bop.png" id="22_2yqen"]
+[ext_resource type="Texture2D" uid="uid://cn2xrre5gtdxy" path="res://PNGs/Player/Player Death 5.png" id="22_kmioq"]
+[ext_resource type="Texture2D" uid="uid://f7q2a5h1yclb" path="res://PNGs/Health Bar/Damage 2 (Red).png" id="22_mbmm6"]
+[ext_resource type="Texture2D" uid="uid://bcybe32nx7ys6" path="res://PNGs/Player/Walk 1.png" id="23_5v2gy"]
+[ext_resource type="Texture2D" uid="uid://bnrf6e131akfc" path="res://PNGs/Health Bar/Damage 3 (Red).png" id="23_vl6le"]
+[ext_resource type="Texture2D" uid="uid://cnscigjqej7um" path="res://PNGs/Player/Player Death 6.png" id="23_x008k"]
+[ext_resource type="Texture2D" uid="uid://blmf31l6e1i3i" path="res://PNGs/Player/Player Death 7.png" id="24_cghxd"]
+[ext_resource type="Texture2D" uid="uid://spv5d6hp55sg" path="res://PNGs/Health Bar/Damage 4 (Red).png" id="24_m6i86"]
+[ext_resource type="Texture2D" uid="uid://6nrnvku256dk" path="res://PNGs/Player/Walk 2.png" id="24_nuqph"]
+[ext_resource type="Texture2D" uid="uid://drx72luwm2l45" path="res://PNGs/Player/Walk 3.png" id="25_1533f"]
+[ext_resource type="Texture2D" uid="uid://bkl15cxqndt7x" path="res://PNGs/Player/Player Death 8.png" id="25_foin8"]
+[ext_resource type="Texture2D" uid="uid://cwmg2fqgvleel" path="res://PNGs/Health Bar/Four Hearts.png" id="25_iw0vw"]
+[ext_resource type="Texture2D" uid="uid://unkhxv7soqam" path="res://PNGs/Player/Player Death 9.png" id="26_f11s8"]
+[ext_resource type="Texture2D" uid="uid://b6fx1mxxuybal" path="res://PNGs/Health Bar/Four Hearts Bop.png" id="26_uur47"]
+[ext_resource type="Texture2D" uid="uid://bq80v5r13s03c" path="res://PNGs/Player/Walk 4.png" id="26_ya7qx"]
+[ext_resource type="Texture2D" uid="uid://bkv87ywgupux7" path="res://PNGs/Player/Player Death 10.png" id="27_1ef24"]
+[ext_resource type="Texture2D" uid="uid://b3b1v1a2gtltf" path="res://PNGs/Player/Walk 5.png" id="27_6k10l"]
+[ext_resource type="Texture2D" uid="uid://bdyjsgunftvn1" path="res://PNGs/Player/Player Death 11.png" id="28_8lku0"]
+[ext_resource type="Texture2D" uid="uid://dhjbk2n7h6ays" path="res://PNGs/Player/Player Death 12.png" id="29_keqq1"]
+[ext_resource type="Texture2D" uid="uid://cqiclybyu17dk" path="res://PNGs/Health Bar/One Heart.png" id="29_ms6ky"]
+[ext_resource type="Texture2D" uid="uid://bwxmagpk5xkh3" path="res://PNGs/Player/Player Death 13.png" id="30_plv8t"]
+[ext_resource type="Texture2D" uid="uid://pj2o1rds0awg" path="res://PNGs/Health Bar/One Heart Bop.png" id="30_uua8u"]
+[ext_resource type="Texture2D" uid="uid://d3yux1kmqc531" path="res://PNGs/Health Bar/Three Hearts.png" id="31_8m7oq"]
+[ext_resource type="Texture2D" uid="uid://do013ee2lu7pr" path="res://PNGs/Player/Player Death 14.png" id="31_uovxi"]
+[ext_resource type="Texture2D" uid="uid://gmcjrasxq5y7" path="res://PNGs/Health Bar/Three Hearts Bop.png" id="32_4dupt"]
+[ext_resource type="Texture2D" uid="uid://ctak63jse28f5" path="res://PNGs/Player/Pushing 1.png" id="32_pdt4t"]
+[ext_resource type="Texture2D" uid="uid://cmau415fx7mof" path="res://PNGs/Player/Player Death 15.png" id="32_vjom3"]
+[ext_resource type="Texture2D" uid="uid://cnuupdropatd4" path="res://PNGs/Player/Player Death 16.png" id="33_ct61l"]
+[ext_resource type="Texture2D" uid="uid://7ihx6xi4o147" path="res://PNGs/Player/Pushing 2.png" id="33_cv32k"]
+[ext_resource type="Texture2D" uid="uid://djte35o4uljko" path="res://PNGs/Health Bar/Two Hearts.png" id="33_ifsi0"]
+[ext_resource type="Texture2D" uid="uid://bj04777oobkdr" path="res://PNGs/Health Bar/Two Hearts Bop.png" id="34_cw41u"]
+[ext_resource type="Texture2D" uid="uid://cqs04iqwxb8k7" path="res://PNGs/Player/Pushing 3.png" id="34_u7c7y"]
+[ext_resource type="Texture2D" uid="uid://bysi7htk38d4e" path="res://PNGs/Player/Player Death 17.png" id="34_wefjo"]
+[ext_resource type="Texture2D" uid="uid://be01o0jahywcj" path="res://PNGs/Player/Pushing 4.png" id="35_s0chk"]
+[ext_resource type="Texture2D" uid="uid://7eqtw6d14a46" path="res://PNGs/Player/Player Death 18.png" id="35_t5ffl"]
+[ext_resource type="Texture2D" uid="uid://bfol6wsg5xxao" path="res://PNGs/Player/Player Death 19.png" id="36_2dmy1"]
+[ext_resource type="Texture2D" uid="uid://c48n47bghhcds" path="res://PNGs/Player/Pushing 5.png" id="36_e1ddk"]
+[ext_resource type="Texture2D" uid="uid://cyy2lx3npici7" path="res://PNGs/Player/Player Death 20.png" id="37_c2ixu"]
+[ext_resource type="Texture2D" uid="uid://d3kruxjssyh30" path="res://PNGs/Player/Player Death 21.png" id="38_3dtmu"]
+[ext_resource type="Texture2D" uid="uid://c02cdpafyja32" path="res://PNGs/Player/Player Death 22.png" id="39_17yqp"]
+[ext_resource type="Texture2D" uid="uid://c5l8qkim4ku08" path="res://PNGs/Player/Player Death 23.png" id="40_wlgjn"]
+[ext_resource type="Texture2D" uid="uid://d4g7e0lvrkj5b" path="res://PNGs/Player/Player Death 24.png" id="41_reh13"]
+[ext_resource type="Texture2D" uid="uid://pkjnj1uu142b" path="res://PNGs/Health Bar/Heal Five Hearts 1.png" id="45_jcfgl"]
+[ext_resource type="Texture2D" uid="uid://7j7gh287t8dq" path="res://PNGs/Health Bar/Heal Five Hearts 3.png" id="46_qeo3i"]
+[ext_resource type="Texture2D" uid="uid://c2j7e7r2otf5f" path="res://PNGs/Health Bar/Heal Four Hearts 1.png" id="47_fhbal"]
+[ext_resource type="Texture2D" uid="uid://bc2gtf22buyxg" path="res://PNGs/Health Bar/Heal Four Hearts 3.png" id="48_e8gv7"]
+[ext_resource type="Texture2D" uid="uid://t7mlfgtkv4wi" path="res://PNGs/Health Bar/Heal Three Hearts 1.png" id="49_82k3n"]
+[ext_resource type="Texture2D" uid="uid://igaec1w3r08" path="res://PNGs/Health Bar/Heal Three Hearts 3.png" id="50_h4bt8"]
+[ext_resource type="Texture2D" uid="uid://cskwwj80cvri7" path="res://PNGs/Health Bar/Heal Two Hearts 1.png" id="51_dohye"]
+[ext_resource type="Texture2D" uid="uid://b3jbrpf6ejnkw" path="res://PNGs/Health Bar/Heal Two Hearts 3.png" id="52_ws11y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1vjlo"]
+size = Vector2(27, 51)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2udl7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_05vpe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_t7p8f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_spk55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_karhk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_dfvb4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_oowyt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_giahr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_pq1du")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_q0uut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_w453o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_hjkrp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_dus3d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_a3kva")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_1i542")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_5poub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_05vpe")
+}],
+"loop": false,
+"name": &"heal",
+"speed": 20.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o6vw2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_uh0hn")
+}],
+"loop": false,
+"name": &"damage",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_0o08h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_hkrhy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_c0pv6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_hs7r3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_kmioq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_x008k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_cghxd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_foin8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_f11s8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_1ef24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_8lku0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_keqq1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_plv8t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_uovxi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_vjom3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_ct61l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_wefjo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_t5ffl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_2dmy1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_c2ixu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_3dtmu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_17yqp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_wlgjn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_reh13")
+}],
+"loop": false,
+"name": &"death",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_080er")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ph7n1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_lgjsw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fyoyo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ochj3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ojanr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_vnuye")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_cvuk1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_yewb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_imnjr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_lobx6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_ldi07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_vg0ry")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_rxxfk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_080er")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("32_pdt4t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_cv32k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_u7c7y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_s0chk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_e1ddk")
+}],
+"loop": true,
+"name": &"push",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_5v2gy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_nuqph")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_1533f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_ya7qx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_6k10l")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qh032"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("21_s3wmb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_mbmm6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_vl6le")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_m6i86")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_s3wmb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_mbmm6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_vl6le")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_m6i86")
+}],
+"loop": false,
+"name": &"damage",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_mbmm6")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_iw0vw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_uur47")
+}],
+"loop": true,
+"name": &"fourHearts",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("21_ec235")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_2yqen")
+}],
+"loop": true,
+"name": &"fullHealth",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("45_jcfgl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_qeo3i")
+}],
+"loop": true,
+"name": &"healFiveHearts",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("47_fhbal")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_e8gv7")
+}],
+"loop": true,
+"name": &"healFourHearts",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("49_82k3n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_h4bt8")
+}],
+"loop": true,
+"name": &"healThreeHearts",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("51_dohye")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_ws11y")
+}],
+"loop": true,
+"name": &"healTwoHearts",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_ms6ky")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_uua8u")
+}],
+"loop": true,
+"name": &"oneHeart",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_8m7oq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_4dupt")
+}],
+"loop": true,
+"name": &"threeHearts",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_ifsi0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_cw41u")
+}],
+"loop": true,
+"name": &"twoHearts",
+"speed": 4.0
+}]
+
+[sub_resource type="Theme" id="Theme_qc758"]
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 98
+script = ExtResource("1_t4g6b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 6.5)
+shape = SubResource("RectangleShape2D_1vjlo")
+
+[node name="HealingEffect" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.551)
+sprite_frames = SubResource("SpriteFrames_2udl7")
+animation = &"heal"
+
+[node name="BackgroundColor" type="ColorRect" parent="."]
+offset_left = -464.0
+offset_top = -264.0
+offset_right = 464.0
+offset_bottom = 264.0
+color = Color(0, 0, 0, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_o6vw2")
+animation = &"death"
+
+[node name="HUD" type="Camera2D" parent="."]
+zoom = Vector2(1.25, 1.25)
+
+[node name="HealthBar" type="AnimatedSprite2D" parent="HUD"]
+position = Vector2(-335.875, -216.75)
+scale = Vector2(1.53125, 1.53125)
+sprite_frames = SubResource("SpriteFrames_qh032")
+animation = &"fullHealth"
+
+[node name="StartMessage" type="Label" parent="HUD"]
+offset_left = -260.0
+offset_top = -198.0
+offset_right = 263.0
+offset_bottom = -119.0
+theme_override_font_sizes/font_size = 52
+text = "Onward and Upward"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="HUD/StartMessage"]
+layout_mode = 0
+offset_left = 137.0
+offset_top = 107.0
+offset_right = 387.0
+offset_bottom = 180.0
+theme_override_font_sizes/font_size = 22
+text = "Press Start to Begin!"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="HUD"]
+offset_left = -89.0
+offset_top = 71.0
+offset_right = 94.0
+offset_bottom = 118.0
+theme = SubResource("Theme_qc758")
+text = "Start"
+
+[node name="GameOverLabel" type="Label" parent="HUD"]
+offset_left = -168.0
+offset_top = -168.0
+offset_right = 176.0
+offset_bottom = -85.0
+theme_override_font_sizes/font_size = 60
+text = "GAME OVER"
+
+[node name="GameOverButton" type="Button" parent="HUD"]
+offset_left = -40.0
+offset_top = 72.0
+offset_right = 45.0
+offset_bottom = 122.0
+theme_override_font_sizes/font_size = 30
+text = "Retry"
+
+[node name="Raycast" type="Node2D" parent="."]
+position = Vector2(25, 6.5)
+
+[node name="RayCast1" type="RayCast2D" parent="Raycast"]
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast2" type="RayCast2D" parent="Raycast"]
+rotation = 0.0872665
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast3" type="RayCast2D" parent="Raycast"]
+rotation = -0.0872665
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast4" type="RayCast2D" parent="Raycast"]
+rotation = 0.174533
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast5" type="RayCast2D" parent="Raycast"]
+rotation = -0.174533
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast6" type="RayCast2D" parent="Raycast"]
+rotation = 0.261799
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast7" type="RayCast2D" parent="Raycast"]
+rotation = -0.261799
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast8" type="RayCast2D" parent="Raycast"]
+rotation = 0.349066
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast9" type="RayCast2D" parent="Raycast"]
+rotation = -0.349066
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast10" type="RayCast2D" parent="Raycast"]
+rotation = 0.436332
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast11" type="RayCast2D" parent="Raycast"]
+rotation = -0.436332
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast12" type="RayCast2D" parent="Raycast"]
+rotation = 0.523599
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast13" type="RayCast2D" parent="Raycast"]
+rotation = -0.523599
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast14" type="RayCast2D" parent="Raycast"]
+rotation = 0.610865
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast15" type="RayCast2D" parent="Raycast"]
+rotation = -0.610865
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast16" type="RayCast2D" parent="Raycast"]
+rotation = 0.698132
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast17" type="RayCast2D" parent="Raycast"]
+rotation = -0.698132
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast18" type="RayCast2D" parent="Raycast"]
+rotation = 0.785398
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="RayCast19" type="RayCast2D" parent="Raycast"]
+rotation = -0.785398
+target_position = Vector2(375, 0)
+collision_mask = 8
+
+[node name="EnemyCollisionDetectors" type="Node2D" parent="."]
+
+[node name="Detector1" type="RayCast2D" parent="EnemyCollisionDetectors"]
+position = Vector2(14, -19)
+scale = Vector2(0.5, 0.5)
+skew = -1.41895
+target_position = Vector2(-666.573, 674.332)
+collision_mask = 20
+
+[node name="Detector2" type="RayCast2D" parent="EnemyCollisionDetectors"]
+position = Vector2(-13, -19)
+scale = Vector2(0.5, 0.5)
+skew = -1.41895
+target_position = Vector2(-666.573, 674.332)
+collision_mask = 20
+
+[node name="Detector3" type="RayCast2D" parent="EnemyCollisionDetectors"]
+position = Vector2(-13, 32)
+scale = Vector2(0.5, 0.5)
+skew = -1.41895
+target_position = Vector2(54, 0)
+collision_mask = 20
+
+[node name="Detector4" type="RayCast2D" parent="EnemyCollisionDetectors"]
+position = Vector2(14, -19)
+scale = Vector2(0.5, 0.5)
+skew = -1.41895
+target_position = Vector2(-54, 0)
+collision_mask = 20
+
+[node name="ExitDetector" type="RayCast2D" parent="."]
+position = Vector2(16, 8)
+target_position = Vector2(-32, 0)
+collision_mask = 128
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="HealAnimationTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="DeathAnimationTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="BoulderPushTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="ResetHealVariableTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="pressed" from="HUD/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="HUD/GameOverButton" to="." method="_on_game_over_button_pressed"]
+[connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="HealAnimationTimer" to="." method="_on_heal_animation_timer_timeout"]
+[connection signal="timeout" from="DeathAnimationTimer" to="." method="_on_death_animation_timer_timeout"]
+[connection signal="timeout" from="BoulderPushTimer" to="." method="_on_boulder_push_timer_timeout"]
+[connection signal="timeout" from="ResetHealVariableTimer" to="." method="_on_reset_heal_variable_timer_timeout"]

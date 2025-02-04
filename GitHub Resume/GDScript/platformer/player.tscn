@@ -1,0 +1,130 @@
+[gd_scene load_steps=11 format=3 uid="uid://bbq44fucygc3m"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_cnbpj"]
+[ext_resource type="Texture2D" uid="uid://dpuani65w4ka7" path="res://PNG/Players/Player Blue/playerBlue_stand.png" id="1_u2xml"]
+[ext_resource type="Texture2D" uid="uid://dd40ojreyer8l" path="res://PNG/Players/Player Blue/playerBlue_walk1.png" id="2_2tsp4"]
+[ext_resource type="Texture2D" uid="uid://dcpc8mxl0wv6d" path="res://PNG/Players/Player Blue/playerBlue_up2.png" id="2_04imp"]
+[ext_resource type="Texture2D" uid="uid://cfo162nlifdj3" path="res://PNG/Players/Player Blue/playerBlue_walk2.png" id="3_3c4me"]
+[ext_resource type="Texture2D" uid="uid://cjgxn8t51vug3" path="res://PNG/Players/Player Blue/playerBlue_dead.png" id="3_s4j8n"]
+[ext_resource type="Texture2D" uid="uid://chs6g8b188jxw" path="res://PNG/Players/Player Blue/playerBlue_walk3.png" id="4_xvfma"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5wnms"]
+size = Vector2(31, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5ydos"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_s4j8n")
+}],
+"loop": false,
+"name": &"death",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_u2xml")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_u2xml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_04imp")
+}],
+"loop": false,
+"name": &"jump_animation",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2tsp4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3c4me")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xvfma")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3c4me")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
+
+[sub_resource type="Theme" id="Theme_1ild4"]
+default_font_size = 50
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+script = ExtResource("1_cnbpj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 2)
+shape = SubResource("RectangleShape2D_5wnms")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5ydos")
+animation = &"death"
+frame_progress = 1.0
+
+[node name="HUD" type="Camera2D" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+offset_left = -557.0
+offset_top = -318.0
+offset_right = -369.0
+offset_bottom = -249.0
+theme = SubResource("Theme_1ild4")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Score: 0"
+
+[node name="Message" type="Label" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -448.0
+offset_top = -288.0
+offset_right = 452.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "Defeat all enemies to unlock the end of the level!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="HUD"]
+offset_left = -104.0
+offset_top = 48.0
+offset_right = 96.0
+offset_bottom = 98.0
+text = "Start"
+
+[node name="EnemyDeathDetector" type="RayCast2D" parent="."]
+target_position = Vector2(0, 30)
+collision_mask = 4
+
+[node name="PlayerDeathDetectorRight" type="RayCast2D" parent="."]
+target_position = Vector2(19, 0)
+collision_mask = 12
+
+[node name="PlayerDeathDetectorLeft" type="RayCast2D" parent="."]
+target_position = Vector2(-19, 0)
+collision_mask = 12
+
+[node name="ExitDetector" type="RayCast2D" parent="."]
+position = Vector2(0, -23)
+collision_mask = 8
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="pressed" from="HUD/StartButton" to="." method="_on_start_button_pressed"]

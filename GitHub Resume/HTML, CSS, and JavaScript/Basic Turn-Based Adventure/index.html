@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>First Day</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+ <body> 
+    <div id = "banner" style = "border: groove 4px cyan; background-color: skyblue; border-radius: 10px;color: navy; text-shadow: -2px 2px cyan;">
+    <h1>Basic Turn-Based Adventure</h1>
+    <h2><i>Revisiting HTML and Javascript!</i></h2>
+
+    <img src = "https://webstockreview.net/images/hello-clipart-word-8.png" alt = "Hello" width = 200 height = 100></img>
+
+    <br>
+    <br>
+
+    <button style = "border-radius: 10px": onclick = "onClick()">Look! A Button!</button>
+
+    <br>
+
+    <p><u><b><div style = "color: green">Fun Fact!</div></b></u></p>
+    <p>Kakorrhaphiophobia (kak·or·rhaph·io·pho·bia) is the irrational fear of failure (and it also happens to be a really fun word to say)!</p>
+
+    <button style = "border-radius: 10px": onclick = "startAdventure()">Begin Adventure!</button>
+    </div>
+
+    <div style = "height: 50vh; width: 50vw">
+    <img id = "mainPic" src = "images/forest.jpg" style = "max-height: 100%; max-width: 100%">
+    </div>
+
+    <div id = "controlButtons">
+      <button style = "border-radius: 10px": onclick = "enterArena()">Enter the Forest</button>
+      <button style = "border-radius: 10px": onclick = "attack()">Attack</button>
+      <button style = "border-radius: 10px": onclick = "printInventory()">Inventory</button>
+      
+      <br>
+
+      <label id = "sysPrompt1"></label><br>
+      <label id = "sysPrompt2"></label><br>
+
+    </div>
+
+    <label id = "sysPrompt3"></label><br>
+
+    <table id="playerStatsTable" width=100%>
+      <tr>
+        <th>Name:</th>
+        <th>Level:</th>
+        <th>Health:</th>
+        <th>Experience:</th>
+        <th>Gold:</th>
+      </tr>
+
+      <tr>
+        <td align="center" id="nameLabel">Player 1</td>
+        <td align="center" id="levelLabel">1</td>
+        <td align="center" id="healthLabel">24</td>
+        <td align="center" id="xpLabel">0</td>
+        <td align="center" id="goldLabel">0</td>
+      </tr>
+    </table>
+
+    <table id="monsterStatsTable" width=100%>
+      <tr>
+        <th>Name:</th>
+        <th>Health:</th>
+      </tr>
+
+      <tr>
+        <td align="center" id="monsterNameLabel">Malicious Mushroom</td>
+        <td align="center" id="monsterHealthLabel">16</td>
+      </tr>
+    </table>
+
+    <script src="/scripts/dice.js"></script>
+    <script src="/scripts/pageSetup.js"></script>
+    <script src="/scripts/weaponClass.js"></script>
+    <script src="/scripts/armor.js"></script>
+    <script src="/scripts/monsterClass.js"></script>
+    <script src="/scripts/playerCharacter.js"></script>
+
+  </body>
+</html>

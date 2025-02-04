@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://bxr5k2i7y6axc"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_e2gpo"]
+[ext_resource type="Texture2D" uid="uid://c7q6hd0qx1shu" path="res://Frog-1.png.png" id="2_3htov"]
+[ext_resource type="Texture2D" uid="uid://d0x3o5v4loylt" path="res://Frog-2.png.png" id="3_1j3b5"]
+[ext_resource type="Texture2D" uid="uid://bdqxp55knxy5x" path="res://Frog-3.png.png" id="4_1qkit"]
+[ext_resource type="Texture2D" uid="uid://c0fc8uc1yhj72" path="res://Frog-4.png.png" id="5_jm7gs"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1qdum"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3htov")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1j3b5")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_1qkit")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jm7gs")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c18gl"]
+radius = 25.0
+height = 56.0
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_e2gpo")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1qdum")
+animation = &"walk"
+frame_progress = 0.872629
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_c18gl")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

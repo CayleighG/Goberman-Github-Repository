@@ -1,0 +1,916 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{lineno}
+
+\title{Algorithms Assignment 1 - Documentation}
+\author{Cayleigh Goberman}
+\date{2 October 2024}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+..............................................................................
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Step-by-Step Explanation of Code}
+Hello! If you are reading this, then one can assume that you are interested in learning about each process seen in the code for Assignment 1. If you are here simply because this is the first section, and you want to dig through the raw code yourself with no help, then no worries! Simply navigate to Section 3 in order to view the code in one big chunk.
+\\
+Still here? Then let's not waste any more time! Time to figure out what is actually going on in this program!
+\\
+\subsection{Reading Into An Array}
+The this program has three overall goals; read a list of strings, search through it and isolate any palindromes, and sort the shuffled list using four different sorting algorithms. 
+\\ Of course, we can't do any of these processes without an actual list to read from. That is where this section comes into play. 
+\\Note: the following code will be written in C++.
+\\ First, we need to include a very important line of code:
+\textbf{
+\\
+\\\#include $<fstream>$
+\\~\\
+}
+
+This code, which can be seen on line 11, allows us to use ifstream, which is a function in C++ that allows us to open and read data from a specified file. Following this, we can jump to lines 263 - 274.
+\\ \textbf{
+\\ \indent ifstream file;\\
+    \textit{ \indent // If we want to add more items to the array, we can modify its length in this single line\\ }
+    \indent const int size = 666;\\
+    \indent string magicItemsArray[size];\\
+    \indent file.open("magicItems.txt");\\
+\\
+    \textit{ \indent // Failsafe in case the user does not have the file\\ }
+    \indent if (file.fail()) \{\\
+       \indent \indent cout $<<$ "File failed to open" $<<$ endl;\\
+        \textit{ \indent \indent // Returning 1 indicates to the program that something has gone wrong\\ }
+        \indent \indent return 1;\\
+    \indent \}\\
+\\
+    \textit{ \indent // Keeps track of how many lines have been read from magicItems so far\\ }
+    \indent int lines = 0;\\ }
+
+Since this code is under the "main()" function, it will be executed automatically once the program is run. "ifstream file" tells the program that we want to open a file called "file". This is addressed in line 267, where we open the file "magicItems.txt" and assign it the name "file". In the in-between lines, we define two variables that will come in handy later; the constant integer "size", set to 666, and the array "magicItemsArray", set to contain "size" (666) amount of strings. The "if" statement on line 270 acts as a failsafe in case the file cannot be found; instead of crashing the program, it will inform the user that it cannot open the file. Finally, we define the variable "lines" to be used in the following "while" loop on lines 279 - 296:
+\\ \textbf{
+\\ \textit{ \indent // eof() is part of ifstream. It will return "true" once we reach the end of the file\\ 
+    \indent // As such, as long as eof() = false, we will continue to add to the array\\ }
+    \indent while(!file.eof()) \{\\
+        \textit{ \indent \indent // getline() reads the next line from magicitems\\
+        \indent \indent // It will then store that line in magicItemsArray at index "lines"\\ }
+        \indent \indent getline(file, magicItemsArray[lines]);\\
+        \indent \indent lines += 1;\\
+\\
+        \textit{ \indent \indent // Failsafe for if we accidentally reach the end of the array before we have added all the items from the text file\\ }
+        \indent \indent if (lines == size) \{\\
+            \indent \indent \indent cout $<<$ "The array is full! There is no more storage space." $<<$ endl;\\
+            \textit{ \indent \indent \indent// End the loop\\ }
+            \indent \indent \indent break;\\
+        \indent \indent \}\\
+    \indent \}\\
+\\
+    \textit{ \indent // Don't forget to close the file when done\\ }
+    \indent file.close();\\ }
+
+This loop is how the code reads magicItems.txt into an array. This is crucial for the items contained in the document to be read, sorted, and rearranged later on in the code. As long as the code has not reached the end of the file, it will continue to iterate through the "while" loop. Each time the loop runs, the code will read the next item in magicItems.txt. The item will then be stored at index "lines" in magicItemsArray, and "lines" will increase by one. The loop also includes a failsafe in case we reach the end of the array before we reach the end of the file. This will cause the code to inform us that "The array is full! There is no more storage space." rather than simply crashing the program. Finally, once every item has been copied into magicItemsArray, the program closes the file at line 296.
+
+\subsection{Stacks and Queues (Checking for Palindromes)}
+Now that we have successfully copied all the items in the file into an easily-accessible array, we can check to see if there are any palindromes in the list. A palindrome is a word or phrase that reads the same forwards as it does backwards. As such, we will need to compare each word to itself, but reversed. In order to do that, we will be using a stack and a queue. \\
+
+First, we have to look at lines 13 - 22 in order to see what must be set up prior to the implementation of the stack and queue:
+
+\textbf{
+\\~\\ \textit{ // Defines how many characters are allowed in the stack or queue at a time\\ }
+\#define stackAndQueueSize 100\\
+string stack[stackAndQueueSize];\\
+int stackTop = -1;\\
+\\
+string queue[stackAndQueueSize];\\ }
+\\ 
+Here, we set the size of both the stack and the queue to 100. Since most words or phrases have less than 100 characters, this should be enough to contain each letter in the item's name. Following this, we create a stack that is the same size as stackAndQueueSize (100) and define its top as the position -1. Similarly, we also create a queue that is the same size as stackAndQueueSize.\\
+
+Now that we have created the stack and queue, we can create the functions that will allow them to actually act like stacks and queues:
+
+\textbf{
+\\~\\ \textit{ // Sets up isEmpty so we can detect when the stack is, well, empty.\\ }
+bool stackIsEmpty() \{\\
+    \indent if (stackTop == -1) \{\\
+       \indent \indent return true;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent return false;\\
+    \indent \}\\
+\}\\
+\\
+\textit{ // Sets up the ability to push values\\
+// Is set to "void" so we do not have to return a value\\ }
+void push(string character) \{\\ 
+    \indent if (stackTop == stackAndQueueSize - 1) \{\\
+        \indent \indent cout $<<$ "Stack is full!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent stackTop++;\\
+        \indent \indent stack[stackTop] = character;\\
+    \indent \}\\
+\}\\
+\\
+\textit{ // Sets up the ability to pop values\\ }
+void pop() \{\\
+    \textit{ \indent // Checks if the stack is empty so that we do not try to pop a nonexistent value\\ }
+    \indent if (stackIsEmpty() == true) \{\\
+        \indent \indent cout $<<$ "Stack is empty!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent stackTop$--$;\\
+    \indent \}\\
+\} \\~\\ }
+
+These three functions (lines 27 - 59) correspond to three actions we can perform on our stack. The first, stackIsEmpty(), checks to see if the stack is empty. It mostly acts as a failsafe for the pop() function so we do not try to subtract from an empty stack, which will crash the program. 
+\\ push() allows us to add characters to our stack. When we call for it, we pass the string "character". If the stack is not full, then we add it to the top of the stack and set the new top equal to the character's value. Otherwise, we inform the user that the stack is full, and refuse to try to add any more characters. 
+\\ pop() is the opposite of push(). This allows us to remove a character from the stack. It is how we will get the backwards version of each item. When we pop an item from the stack, its spelling will be returned reversed, since stacks return the most recently added variable first. After we get the backwards item, we can compare it to the queue (line 62 - 106), which will return the normal spelling.
+
+\textbf{
+\\~\\ \textit{ // Sets up isEmpty so we can detect when the queue is empty.\\ }
+bool queueisEmpty() \{\\
+    \indent if (queueFront == -1 \&\& queueBack == -1) \{\\
+        \indent \indent return true;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent return false;\\
+    \indent \}\\
+\}\\
+\\
+\textit{ // Sets up the ability to enqueue values\\ }
+void enqueue(string character) \{\\
+    \textit{ // Detects if the queue is full and gives us a warning\\ }
+    \indent if (queueBack == stackAndQueueSize - 1) \{\\
+        \indent \indent cout $<<$ "Queue is full!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \textit{ \indent \indent // Insert first item\\ }
+        \indent \indent if (queueFront == -1) \{\\
+            \indent \indent \indent queueFront = 0;\\
+        \indent \indent \}\\
+        \indent \indent queueBack++;\\
+        \textit{ \indent \indent // Insert at back of queue\\ }
+        \indent \indent queue[queueBack] = character;\\
+    \indent \}\\
+\}\\
+\\
+\textit{ // Sets up the ability to dequeue values\\ }
+void dequeue() \{\\
+    \textit{ // Detects if the queue is empty and gives us a warning\\ }
+    \indent if (queueBack == stackAndQueueSize - 1) \{\\
+        \indent \indent cout $<<$ "Queue is empty!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \textit{ \indent \indent // Occurs if we remove the last item in the queue\\
+        \indent \indent // Resets queue back to beginning state\\ }
+        \indent \indent if (queueFront == queueBack) \{\\
+            \indent \indent \indent queueFront = -1;\\
+            \indent \indent \indent queueBack = -1;\\
+        \indent \indent \}\\
+        \indent \indent else \{\\
+            \indent \indent \indent queueFront++;\\
+        \indent \indent \}\\
+    \indent \}\\
+\} \\~\\ }
+
+Similarly to the stack, we begin the queue functions by creating a way to detect if a queue is empty. In this case, if the front and the back of the queue have an equal value, then the queue is empty. 
+\\ Following this, we set up the enqueue() function. If the queue is not full, enqueue() will insert the character into the queue. On the other hand, if it is empty, it will add the first character and reset the queueFront value to equal 0. As such, this will indicate to the code that the queue contains at least one value. Following this, every subsequent character is inserted at the back of the queue and the queueBack index is increased by 1. 
+\\ dequeue() allows us to remove a value from the queue as long as the queue is not empty. For every character removed from the queue, it pushes the front of the queue up by 1. If the value of queueFront ever equals the value of queueBack, then the code realizes that the queue must be empty, and resets it to its beginning state of queueFront = -1 and queueBack = -1.
+\\ Now that the functions for the stack and the queue have been created, we can use them to search the list for palindromes.
+
+\textbf{
+\\~\\ \textit{ \indent // Leaving this outside the loop, otherwise it will print more than once\\ }
+    \indent cout $<<$ "The following items from the list are palindromes: " $<<$ endl;\\
+\\
+    \textit{ \indent // The loop is set to the current size of magicItemsArray\\ }
+    \indent for (int i = 0; i $<$ size; i++) \{\\
+        \indent \indent string poppedStack = "";\\
+        \indent \indent string dequeuedQueue = "";\\
+        \textit{ \indent \indent // Need to declare the sizes as separate variables.\\
+        \indent \indent // Otherwise, the size will change as we pop the stack and queue, and we will miss characters\\ }
+        \indent \indent int stackSize = 0;\\
+        \indent \indent int queueSize = 0;\\
+        \textit{ \indent \indent // This is so we can save the current item as it is (without changing the spaces and capitalizations)\\
+        \indent \indent // This way, if it is a palindrome, we can print it as it originally appeared\\ }
+        \indent \indent string currentItem = magicItemsArray[i];\\~\\ }
+
+This code is present inside of the main() function on lines 313 - 328. As such, it will be run when the program is executed. Most of the actual comparison action takes place inside the "for" loop on line 317. However, prior to this, we print out "The following items from the list are palindromes:" so that we can properly address why we are printing random phrases. \\
+The "for" loop will iterate through every item in magicItemsArray. Once it begins, it creates five variables that we will use later on: the strings poppedStack and dequeuedQueue, which is where we will store the characters popped and dequeued from the stack and queue, the integers stackSize and queueSize, and the string currentItem, which is where we will store the base form of the phrase we are examining. If the word or phrase is a palindrome, we will print currentItem. 
+
+\textbf{
+\\~\\
+        \indent \indent for (int j = 0; j $<$ magicItemsArray[i].length(); j++) \{\\
+            \textit{ \indent \indent \indent //Will only add to the stack if the character is not a space\\ }
+            \indent \indent \indent if (magicItemsArray[i][j] != ' ') \{\\
+                \textit{ \indent \indent \indent \indent // Converts characters to lowercase\\ }
+                \indent \indent \indent \indent magicItemsArray[i][j] = tolower(magicItemsArray[i][j]);\\
+                \textit{ \indent \indent \indent \indent // Pushes and enqueues the single letter at j to the stack and queue, respectively\\ }
+                \indent \indent \indent \indent push(magicItemsArray[i].substr(j, 1));\\
+                \indent \indent \indent \indent enqueue(magicItemsArray[i].substr(j, 1));\\
+                \indent \indent \indent \indent stackSize += 1;\\
+                \indent \indent \indent \indent queueSize += 1;\\
+            \indent \indent \indent \}\\
+        \indent \indent \}\\~\\ }
+
+This section, which can be found on lines 331 - 343, adds the relevant characters to the stack and queue. It runs through every character in the current item, and if the character is not a space, it adds them to the stack and queue. If the character is an uppercase letter, it will turn it into a lowercase letter for ease of comparison. In order to add the character, we utilize push() and enqueue(). We then increase the integers stackSize and queueSize by one. These integers, which keep track of the number of characters in the stack and queue, will be used later on lines 346 and 351. 
+
+\textbf{
+\\~\\
+        \textit{ \indent \indent // Popping the stack and storing the result as "poppedStack."\\ }
+        \indent \indent for (int j = 0; j $<$ stackSize; j++) \{\\
+            \indent \indent \indent poppedStack += stack[stackTop];\\
+            \indent \indent \indent pop();\\
+        \indent \indent \}\\
+        \textit{ \indent \indent // Dequeuing the queue and storing the result as "dequeuedQueue."\\ }
+        \indent \indent for (int j = 0; j $<$ queueSize; j++) \{\\
+            \indent \indent \indent dequeuedQueue += queue[queueFront];\\
+            \indent \indent \indent dequeue();\\
+        \indent \indent \}\\
+\\
+        \textit{ \indent \indent // If poppedStack and dequeuedQueue are equal, then the string is a palindrome and is thus printed\\ }
+        \indent \indent if (poppedStack == dequeuedQueue) \{\\
+            \indent \indent \indent cout $<<$ currentItem $<<$ endl;\\
+        \indent \indent \}\\
+    \indent \}\\~\\ }
+
+Now that all of the characters in the item's name are safely stored in the stack and queue, we can pop the stack and dequeue the queue to get our forwards and backwards versions of the name. Lines 345 - 349 add the character at the top of the stack to poppedStack, then pops the character from the stack. This repeats for the value of stackSize, or the original size of the stack before we started popping character from it. Lines 350 - 354 perform a similar action with dequeue(), although it is storing the character at the front of the queue in dequeuedQueue for each time through the loop. 
+\\ Finally, once all of the stack has been popped into poppedStack and all of the queue has been dequeued into dequeuedQueue, the code compares poppedStack and dequeuedQueue on lines 356 - 360. If the two are equal, then the item's name is a palindrome, and the program prints it before returning to repeat the process with the next item in magicItemsArray.
+\\By the time the loop concludes, the program will have printed out every palindrome in magicItemsArray.
+
+
+\subsection{Shuffle Routine}
+Now that we have located out palindromes, we can use our four different sorting algorithms to sort the list alphabetically. However, before we can sort, we have to make sure that our list is properly shuffled. This is where our shuffle routine comes into play. This routine is called on lines 367, 373, 379, and 385, right before we sort the list with each separate sorting algorithm. 
+
+\textbf{
+\\~\\
+\indent shuffle(magicItemsArray, size);\\~\\ }
+
+This allows the shuffle method to use magicItemsArray and size as variables. We can see the shuffle method in action on lines 114 - 124:
+
+\textbf{
+\\~\\
+void shuffle(string magicItemsArray[], int size) \{\\
+    \indent srand (time(NULL));\\
+    \indent for (int i = size - 1; i $>$ 0; i$--$) \{\\
+        \textit{ \indent \indent // Selects a random object from 0 to i\\ }
+        \indent \indent int randObj = rand() \% (i + 1);\\
+        \textit{ \indent \indent // Swaps magicItemsArray[i] with randObj\\ }
+        \indent \indent string hold = magicItemsArray[i];\\
+        \indent \indent magicItemsArray[i] = magicItemsArray[randObj];\\
+        \indent \indent magicItemsArray[randObj] = hold;\\
+    \indent \}\\
+\}\\~\\ }
+
+Upon beginning the shuffle, we want to make sure that the shuffle is truly random. As such, by using the internal clock (time(NULL)), we can generate a unique random seed (srand()) every time we run the program. \\
+The shuffle then loops through the entire list of items. For every loop, it selects a random item from 0 to i. It will then swap the current selected item with the random item. This continues for the entirety of the list (or "size", which is 666). Once completed, the list is truly shuffled randomly.
+
+
+\subsection{Selection Sort}
+Now that we have shuffled the list, we can apply the first of our sorting algorithms to it. Selection sort is called on line 370: 
+
+\textbf{
+\\~\\ \indent selectionSort(magicItemsArray, size);\\~\\ }
+
+Once called, we navigate to the function itself on lines 126 - 140: 
+
+\textbf{
+\\~\\void selectionSort(string magicItemsArray[], int size) \{\\
+    \indent int selectionComparisons = 0;\\
+    \indent for (int i = 0; i $<$ size; i++)\{\\
+        \indent \indent for (int j = i + 1; j $<$ size; j++) \{\\
+            \indent \indent \indent selectionComparisons += 1;\\
+            \indent \indent \indent if (magicItemsArray[i] $>$ magicItemsArray[j]) \{\\
+                \indent \indent \indent \indent string min = magicItemsArray[i];\\
+                \indent \indent \indent \indent magicItemsArray[i] = magicItemsArray[j];\\
+                \indent \indent \indent \indent magicItemsArray[j] = min;\\
+            \indent \indent \indent \}\\
+        \indent \indent \}\\
+    \indent \}\\
+    \indent cout $<<$ "\textbackslash nTotal Comparisons for Selection Sort: " $<<$ selectionComparisons $<<$ endl;\\
+\}\\~\\ }
+
+Selection Sort begins by creating a variable to keep track of the number of comparisons it will execute. For every comparison, the function will add one to selectionComparisons. This sorting algorithm checks for the smallest item in the list. In this case, it detects which string is alphabetically "highest" (Ex: "abbd" is "higher" than "abcd"). Once it has checked the entire list and located the "highest" string, it swaps that string to the beginning of the list. It will then repeat this process to find the next "highest" item, except it will now swap that item to the second space in the list. This process will repeat until the list is complete, whereupon the function prints the total comparisons.
+\\For more information about the total comparisons and other results, see Section 2: Results.
+
+
+\subsection{Insertion Sort}
+Yay! We completed our first sorting algorithm, Selection Sort! Now, once we've re-shuffled our list, we can try out the next sorting algorithm, Insertion Sort! This sorting method is called on line 376: 
+
+\textbf{
+\\~\\ \indent insertionSort(magicItemsArray, size);\\~\\ }
+
+The function itself can be found on lines 142 - 160:
+
+\textbf{
+\\ void insertionSort(string magicItemsArray[], int size) \{\\
+    \indent int insertionComparisons = 0;\\
+    \indent for (int i = 0; i $<$ size; i++)\{\\
+        \indent \indent string item = magicItemsArray[i];\\
+        \indent \indent int j = i - 1;\\
+        \textit{ \indent \indent // Detects the object before "item". If it is greater than "item", then it is moved to be behind "item".\\
+        \indent \indent // Moves all items greater than "item" to one position ahead of their current one\\ }
+        \indent \indent while (j $>=$ 0 \&\& magicItemsArray[j] $>$ item) \{\\
+            \indent \indent \indent insertionComparisons += 1;\\
+            \indent \indent \indent magicItemsArray[j + 1] = magicItemsArray[j];\\
+            \indent \indent \indent j -= 1;\\
+        \indent \indent \}\\
+        \indent \indent magicItemsArray[j + 1] = item;\\
+    \indent \}\\
+    \indent cout $<<$ "Total Comparisons for Insertion Sort: " $<<$ insertionComparisons $<<$ endl;\\
+\}\\~\\ }
+
+Insertion Sort begins with the first item in the list. It proceeds to sort that item. It then moves on to the first two items in the list, and proceeds to sort those two. It then moves on to the first three, then the first four, and so on, until the entire list is sorted. Similarly to Selection Sort, this version of Insertion Sort keeps track of the number of comparisons and prints the total once it has finished sorting the list. 
+\\For more information about the total comparisons and other results, see Section 2: Results.
+
+
+\pagebreak
+\subsection{Merge Sort}
+One shuffle later, and we are ready to start on the Merge Sort method on line 382. \\
+
+\textbf{\indent mergeSort(magicItemsArray, 0, size - 1);\\ }
+
+Unlike Selection and Insertion Sort, Merge Sort requires two functions. When line 382 is run, it is actually calling the second function, mergeSort(). However, in order to understand mergeSort(), we must first look at the first function, merge(), on lines 162 - 217: \\
+
+\textbf{
+void merge(string magicItemsArray[], int left, int middle, int right) \{\\
+    \textit{ \indent // Length of the left subarray\\ }
+    \indent int nL = middle - left + 1;\\
+    \textit{\indent // Length of the right subarray\\}
+    \indent int nR = right - middle;\\
+\\
+    \textit{\indent // Create temporary subarrays for the left and right\\}
+    \indent string L[nL];\\
+    \indent string R[nR];\\
+\\
+    \textit{\indent // Copy the items from the left and right sides of magicItemsArray into their respective subarray\\}
+    \indent for (int i = 0; i $<$ nL; i++)\{\\
+        \indent \indent L[i] = magicItemsArray[left + i];\\
+    \indent \}\\
+    \indent for (int i = 0; i $<$ nR; i++)\{\\
+        \indent \indent R[i] = magicItemsArray[middle + i + 1];\\
+    \indent \}\\
+\\
+    \textit{\indent // i and j will represent the smallest remaining element in L and R, respectively\\}
+    \indent i = 0;\\
+    \indent j = 0;\\
+    \textit{\indent // k represents the location in magicItemsArray that needs to be filled\\}
+    \indent int k = left;\\
+\\
+    \textit{\indent // As long as L and R have an unmerged element, copy the smallest unmerged element back into magicItemsArray\\}
+    \indent while (i $<$ nL \&\& j $<$ nR) \{\\
+        \indent \indent if (L[i] $<=$ R[j]) {\\
+            \indent \indent \indent magicItemsArray[k] = L[i];\\
+            \indent \indent \indent i++;\\
+        \indent \indent \}\\
+        \indent \indent else \{\\
+            \indent \indent \indent magicItemsArray[k] = R[j];\\
+            \indent \indent \indent j++;\\
+        \indent \indent \}\\
+        \indent \indent k++;\\
+        \indent \indent mergeComparisons += 1;\\
+    \indent \}\\
+\\
+    \textit{\indent // At this point, all of L or R should have been sorted\\
+    \indent // Now we can copy the remaining items into magicItemsArray\\}
+    \indent while (i $<$ nL) \{\\
+        \indent \indent magicItemsArray[k] = L[i];\\
+        \indent \indent i++;\\
+        \indent \indent k++;\\
+        \indent \indent mergeComparisons += 1;\\
+    \indent \}\\
+    \indent while (j $<$ nR) \{\\
+        \indent \indent magicItemsArray[k] = R[j];\\
+        \indent \indent j++;\\
+        \indent \indent k++;\\
+        \indent \indent mergeComparisons += 1;\\
+    \indent \}\\
+\}\\ } }
+
+Merge Sort follows the "divide and conquer" methodology. merge() recursively divides a given array into sub-arrays that are half the size of the previous array. This continues until it has arrays of size one, which are automatically "conquered", or sorteds by virtue of there being only one element present. Once the arrays have been sorted, merge() moves on to the combine aspect, where it merges the sorted sub-arrays to form a single, sorted sub-array, which is our final sorted list.\\
+merge() may be the longer function of the two, but the second function, mergeSort() (lines 220 - 232), is required in order to successfully execute the entire sort:\\
+
+\textbf{
+void mergeSort(string magicItemsArray[], int left, int right) \{\\
+    \textit{\indent // Failsafe in case there is only zero or one element in the array\\}
+    \indent if (left $>=$ right) \{\\
+        \indent \indent return;\\
+    \indent \}\\
+\\
+    \indent int middle = (left + right) / 2;\\
+    \textit{\indent // Recursively sort L\\}
+    \indent mergeSort(magicItemsArray, left, middle);\\
+    \textit{\indent // Recursively sort R\\}
+    \indent mergeSort(magicItemsArray, middle + 1, right);\\
+    \indent merge(magicItemsArray, left, middle, right);\\
+\} }\\
+
+mergeSort() sorts the elements of the subarrays in merge(). It first detects if the sub-arrays have one element. If not, it splits the array into two sub-arrays, then runs merge() to recursively sort the sub-arrays and return the final sorted list.\\
+Unlike in Selection and Insertion Sort, Merge Sort does not declare its comparison count within its functions. Instead, mergeComparisons is declared as a global variable at line 23. Since it is a global variable, it can be accessed by multiple different functions. As such, merge() increments mergeComparisons by one for every comparison it makes, and main() prints the total comparisons at line 394. \\
+
+\textbf{
+\indent cout $<<$ "Total Comparisons for Merge Sort: " $<<$ mergeComparisons << endl;\\ }
+
+
+\subsection{Quicksort}
+Finally, with one more shuffle for good measure, we can move on to our final sorting method, Quicksort (as called on line 388).\\
+
+\textbf{
+\indent quicksort(magicItemsArray, 0, size - 1);\\ }
+
+Similarly to Merge Sort, Quicksort requires two functions in order to successfully sort the list. The first, found on lines 234 - 255, is partition(). \\
+
+\textbf{
+\textit{// Since "pivot" is an int, this function needs to return int as well\\}
+int partition (string magicItemsArray[], int left, int right) \{\\
+    \textit{\indent // Selecting the pivot, which will be the last item\\}
+    \indent string pivot = magicItemsArray[right];\\
+\\
+    \textit{\indent // Item just before the final item (used for swapping)\\}
+    \indent int i = (left - 1);\\
+    \indent for (int j = left; j $<$ right; j++) \{\\
+        \indent \indent quicksortComparisons += 1;\\
+       \textit{\indent \indent // If the current item is less than or equal to pivot\\}
+        \indent \indent if(magicItemsArray[j] $<=$ pivot) \{\\
+            \indent \indent \indent i++;\\
+            \textit{\indent \indent \indent // Found this function that will automatically swap the two items\\}
+            \indent \indent \indent swap(magicItemsArray[i], magicItemsArray[j]);\\
+        \indent \indent \}\\
+    \indent \}\\
+    \textit{\indent // Pivot goes to the right of the low side\\}
+    \indent swap(magicItemsArray[i + 1], magicItemsArray[right]);\\
+\\
+    \textit{\indent // Return the new index of pivot\\}
+    \indent return (i + 1);\\
+\}\\
+}
+
+Quicksort utilizes the divide-and-conquer method to sort the list. Prior to partition(), mergeSort() partitioned the array into two sub-arrays. partition() then takes these sub-arrays and returns the index of the point between the two sides of the partition (the "pivot"). It then repeats this for each subsequent sub-array until the smallest sub-arrays are sorted.\\
+While partition() sorts the sub-arrays around the pivot points, it is quickSort() (lines 257 - 267) that selects the initial pivot point and creates the first two sub-arrays. \\
+
+\textbf{
+void quicksort(string magicItemsArray[], int left, int right) \{\\
+    \textit{\indent // Will continue until the starting "left" item is less than the "right" item\\}
+    \indent if (left $<$ right) \{\\
+        \textit{\indent \indent // Partition subarray around the pivot, which is in magicItemsArray[pivot]\\}
+        \indent \indent int p = partition(magicItemsArray, left, right);\\
+\\
+        \textit{\indent \indent // Sorts the items before and after pivot\\}
+        \indent \indent quicksort(magicItemsArray, left, p - 1);\\
+        \indent \indent quicksort(magicItemsArray, p + 1, right);\\
+    \indent \}\\
+\}\\
+}
+
+Once the two sub-arrays have been created, mergeSort() sends them to partition() to be further divided and sorted.
+
+
+\pagebreak
+\section{Results}
+As mentioned in Section 1: Step-by-Step Explanation of Code, each sorting method counts the number of comparisons it made over the course of its run time. These numbers vary slightly depending on the randomized order of the items in the list. The number of comparisons for five different runs are recorded and averaged below:\\
+
+\begin{center}
+\begin{tabular}{||c | c c c c||} 
+ \hline
+ Sorting Algorithm: & Selection & Insertion & Merge & Quicksort\\ [0.5ex] 
+ \hline\hline
+ Test 1: & 221,445 & 106,891 & 6,302 & 6,961\\ 
+ \hline
+ Test 2: & 221,445 & 109,259 & 6,302 & 6,649\\
+ \hline
+ Test 3: & 221,445 & 110,233 & 6,302 & 6,874\\
+ \hline
+ Test 4: & 221,445 & 109,502 & 6,302 & 6,866\\
+ \hline
+ Test 5: & 221,445 & 112,994 & 6,302 & 6,686\\
+ \hline
+ Average: & 221,445 & 109,775.8 & 6,302 & 6,807.2\\ [1ex] 
+ \hline
+\end{tabular}
+\\
+\end{center}
+
+\textbf{Selection Sort} \\
+The asymptotic running time of Selection Sort is O(n\textsuperscript{2}). Each time we run through the entire list, we only sort out one value. As such, n comparisons must be made the first time, then n-1, then n-2, and so on until the entire list is sorted. As such, no matter what, there will be n\textsuperscript{2} comparisons. This means that the worst-case and best-case scenarios are equal. \\
+If we want to calculate the exact number of comparisons that will occur in a given array, we can use the equation n(n-1)/2. In this case, n is equal to 666. As such, 666(666-1)/2 is equal to 221,445 comparisons. If we refer back to our table of results, we will find that this was the result for every test.\\
+
+\textbf{Insertion Sort} \\
+The best-case asymptotic running time for Insertion Sort is O(n). This occurs in the event that every item is greater than or equal to the item to its left. If this is the case for the entire list (i.e. the list is already sorted), then Insertion Sort only needs to make n comparisons. In the case of our array, then that would be 666 comparisons.\\
+While it is possible to get the best-case scenario, it is also possible to get the worst-case. In this scenario, every item is less than or equal to the item to its left. In other words, the list is sorted, but in reverse. As such, every item will have to be swapped around, resulting in a runtime of O(n\textsuperscript{2}).\\
+In order to approximate the amount of comparisons that will be made in Insertion Sort, we can calculate the number of best and worst case comparisons, then average them together:
+\begin{center} 
+(Best + Worst)/2 = Average Number of Comparisons
+\end{center}
+
+In our array, where n = 666, best case is simply (666-1), or 665. Following the calculation for O(n\textsuperscript{2}) seen in Selection Sort, worst case is 666(666-1)/2, or 221,445.
+
+\begin{center} 
+(665 + 221,445)/2 = 111,055
+\end{center}
+
+Of course, we rarely get the best or the worst case scenario when we shuffle our list. As such, our comparison count for each test run varies slightly. However, if we refer back to our comparisons table, we can see that each comparison count for Insertion Sort is within the general vicinity of our calculated average.\\ 
+
+\textbf{Merge Sort} \\
+Since merge sort requires that we divide our array into smaller and smaller sub-arrays, the asymptotic running time of this sorting method is O(nlog\textsubscript{2}n). log\textsubscript{2}n describes how many times we need to divide our sub-arrays in half until all sub-arrays are of size 1. Following this, the sub-arrays are merged back together in O(n) comparisons. Combining both of these comparison counts together gives us O(nlog\textsubscript{2}n).\\
+
+\textbf{Quicksort} \\
+Since Quicksort is similar to Merge Sort in that it recursively divides the array, it also mostly exhibits an asymptotic running time of O(nlog\textsubscript{2}n). However, unlike Merge Sort, the number of comparisons fluctuates depending on the selected pivot point, As such, the runtime can change depending on best or worse case scenarios. In the worst case, the program chooses a bad pivot point and the array is already sorted. This results in an asymptotic running time of O(n). \\
+Since both Merge Sort and Quicksort have a running time of O(nlog\textsubscript{2}n), we can calculate the expected number of comparisons by inserting 666, or n, into the equation.
+\begin{center} 
+(666)log\textsubscript{2}(666) = 6,246.67
+\end{center}
+If we refer back to the results table, we will find that the average for Merge Sort is 6,302 and the average for Quicksort is 6,807.2. This is close to our calculated estimate of number of comparisons; therefore, the sorting methods are most likely functioning properly. 
+
+
+\pagebreak
+\section{Raw Code}
+
+\begin {linenumbers}
+\textit{
+$/*$ \\
+Cayleigh Goberman\\
+9/16/2024\\
+CMT 435L, Section 112: Algorithm Analysis and Design\\
+Assignment 1\\
+$*/$\\}
+\\
+\textit{// Configuration\\}
+\#include $<iostream>$\\
+\textit{// Gives us ifstream for reading the text file\\}
+\#include $<fstream>$\\
+using namespace std;\\
+\\
+\textit{// Setup for the stack and queue\\
+// Defines how many characters are allowed in the stack or queue at a time\\}
+\#define stackAndQueueSize 100\\
+string stack[stackAndQueueSize];\\
+int stackTop = -1;\\
+\\
+string queue[stackAndQueueSize];\\
+int queueFront = -1;\\
+int queueBack = -1;\\
+int mergeComparisons = 0;\\
+int quicksortComparisons = 0;\\
+\\
+\textit{// Stack\\
+// Sets up isEmpty so we can detect when the stack is, well, empty.\\}
+bool stackIsEmpty() \{\\
+    \indent if (stackTop == -1) \{\\
+       \indent \indent return true;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent return false;\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Sets up the ability to push values\\
+// Is set to "void" so we do not have to return a value\\}
+void push(string character) \{\\
+    \indent if (stackTop == stackAndQueueSize - 1) \{\\
+        \indent \indent cout $<<$ "Stack is full!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent stackTop++;\\
+        \indent \indent stack[stackTop] = character;\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Sets up the ability to pop values\\}
+void pop() \{\\
+    \indent // Checks if the stack is empty so that we do not try to pop a \indent nonexistent value\\
+    \indent if (stackIsEmpty() == true) \{\\
+        \indent \indent cout $<<$ "Stack is empty!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent stackTop$--$;\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Queue\\
+// Sets up isEmpty so we can detect when the queue is empty.\\}
+bool queueisEmpty() \{\\
+    \indent if (queueFront == -1 \&\& queueBack == -1) \{\\
+        \indent \indent return true;\\
+    \indent \}\\
+    \indent else \{\\
+        \indent \indent return false;\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Sets up the ability to enqueue values\\}
+void enqueue(string character) \{\\
+    \textit{// Detects if the queue is full and gives us a warning\\}
+    \indent if (queueBack == stackAndQueueSize - 1) \{\\
+        \indent \indent cout $<<$ "Queue is full!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \textit{\indent \indent // Insert first item\\}
+        \indent \indent if (queueFront == -1) \{\\
+            \indent \indent \indent queueFront = 0;\\
+        \indent \indent \}\\
+        \indent \indent queueBack++;\\
+        \textit{\indent \indent // Insert at back of queue\\}
+        \indent \indent queue[queueBack] = character;\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Sets up the ability to dequeue values\\}
+void dequeue() \{\\
+    \textit{// Detects if the queue is empty and gives us a warning\\}
+    \indent if (queueBack == stackAndQueueSize - 1) \{\\
+        \indent \indent cout $<<$ "Queue is empty!" $<<$ endl;\\
+    \indent \}\\
+    \indent else \{\\
+        \textit{\indent \indent // Occurs if we remove the last item in the queue\\
+        \indent \indent // Resets queue back to beginning state\\}
+        \indent \indent if (queueFront == queueBack) \{\\
+            \indent \indent \indent queueFront = -1;\\
+            \indent \indent \indent queueBack = -1;\\
+        \indent \indent \}\\
+        \indent \indent else \{\\
+            \indent \indent \indent queueFront++;\\
+        \indent \indent \}\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Shuffle: Has to be based on the O(n) Knuth (Fisher-Yates) Shuffle\\
+// This shuffle starts from the last object in the array and swaps it with another random object\\
+// We need srand(time(NULL)) to get a different random seed value so that we do not get the same "random" shuffle each time we run the program. \\
+// It uses the internal clock (time(NULL)) to make a random seed (srand()).\\}
+void shuffle(string magicItemsArray[], int size) \{\\
+    \indent srand (time(NULL));\\
+    \indent for (int i = size - 1; i $>$ 0; i$--$) \{\\
+        \textit{\indent \indent // Selects a random object from 0 to i\\}
+        \indent \indent int randObj = rand() \% (i + 1);\\
+        \textit{\indent \indent // Swaps magicItemsArray[i] with randObj\\}
+        \indent \indent string hold = magicItemsArray[i];\\
+        \indent \indent magicItemsArray[i] = magicItemsArray[randObj];\\
+        \indent \indent magicItemsArray[randObj] = hold;\\
+    \indent \}\\
+\}\\
+\\
+void selectionSort(string magicItemsArray[], int size) \{\\
+    \indent int selectionComparisons = 0;\\
+    \indent for (int i = 0; i $<$ size; i++)\{\\
+        \indent \indent for (int j = i + 1; j $<$ size; j++) \{\\
+            \indent \indent \indent selectionComparisons += 1;\\
+            \indent \indent \indent if (magicItemsArray[i] $>$ magicItemsArray[j]) \{\\
+                \indent \indent \indent \indent string min = magicItemsArray[i];\\
+                \indent \indent \indent \indent magicItemsArray[i] = magicItemsArray[j];\\
+                \indent \indent \indent \indent magicItemsArray[j] = min;\\
+            \indent \indent \indent \}\\
+        \indent \indent \}\\
+    \indent \}\\
+    \indent cout $<<$ "\textbackslash nTotal Comparisons for Selection Sort: " $<<$ selectionComparisons $<<$ endl;\\
+\}\\
+\\
+void insertionSort(string magicItemsArray[], int size) \{\\
+    \indent int insertionComparisons = 0;\\
+    \indent for (int i = 0; i $<$ size; i++)\{\\
+        \indent \indent string item = magicItemsArray[i];\\
+        \indent \indent int j = i - 1;\\
+        \textit{\indent \indent // Detects the object before "item". If it is greater than "item", then it is moved to be behind "item".\\
+        \indent \indent // Moves all items greater than "item" to one position ahead of their current one\\}
+        \indent \indent while (j $>=$ 0 \&\& magicItemsArray[j] $>$ item) \{\\
+            \indent \indent \indent insertionComparisons += 1;\\
+            \indent \indent \indent magicItemsArray[j + 1] = magicItemsArray[j];\\
+            \indent \indent \indent j -= 1;\\
+        \indent \indent \}\\
+        \indent \indent magicItemsArray[j + 1] = item;\\
+    \indent \}\\
+    \indent cout $<<$ "Total Comparisons for Insertion Sort: " $<<$ insertionComparisons $<<$ endl;\\
+\}\\
+\\
+void merge(string magicItemsArray[], int left, int middle, int right) \{\\
+    \textit{\indent // Length of the left subarray\\}
+    \indent int nL = middle - left + 1;\\
+    \textit{\indent // Length of the right subarray\\}
+    \indent int nR = right - middle;\\
+\\
+   \textit{\indent // Create temporary subarrays for the left and right\\}
+    \indent string L[nL];\\
+    \indent string R[nR];\\
+\\
+    \textit{\indent // Copy the items from the left and right sides of magicItemsArray into their respective subarray\\}
+    \indent for (int i = 0; i $<$ nL; i++)\{\\
+        \indent \indent L[i] = magicItemsArray[left + i];\\
+    \indent \}\\
+    \indent for (int i = 0; i $<$ nR; i++)\{\\
+        \indent \indent R[i] = magicItemsArray[middle + i + 1];\\
+    \indent \}\\
+\\
+    \textit{\indent // i and j will represent the smallest remaining element in L and R, respectively\\}
+    \indent i = 0;\\
+    \indent j = 0;\\
+    \textit{\indent // k represents the location in magicItemsArray that needs to be filled\\}
+    \indent int k = left;\\
+\\
+    \textit{\indent // As long as L and R have an unmerged element, copy the smallest unmerged element back into magicItemsArray\\}
+    \indent while (i $<$ nL \&\& j $<$ nR) \{\\
+        \indent \indent if (L[i] $<=$ R[j]) {\\
+            \indent \indent \indent magicItemsArray[k] = L[i];\\
+            \indent \indent \indent i++;\\
+        \indent \indent \}\\
+        \indent \indent else \{\\
+            \indent \indent \indent magicItemsArray[k] = R[j];\\
+            \indent \indent \indent j++;\\
+        \indent \indent \}\\
+        \indent \indent k++;\\
+        \indent \indent mergeComparisons += 1;\\
+    \indent \}\\
+\\
+    \textit{\indent // At this point, all of L or R should have been sorted\\
+    \indent // Now we can copy the remaining items into magicItemsArray\\}
+    \indent while (i $<$ nL) \{\\
+        \indent \indent magicItemsArray[k] = L[i];\\
+        \indent \indent i++;\\
+        \indent \indent k++;\\
+        \indent \indent mergeComparisons += 1;\\
+    \indent \}\\
+    \indent while (j $<$ nR) \{\\
+        \indent \indent magicItemsArray[k] = R[j];\\
+        \indent \indent j++;\\
+        \indent \indent k++;\\
+        \indent \indent mergeComparisons += 1;\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Sorts the elements of the subarrays in merge()\\}
+void mergeSort(string magicItemsArray[], int left, int right) \{\\
+    \textit{\indent // Failsafe in case there is only zero or one element in the array\\}
+    \indent if (left $>=$ right) \{\\
+        \indent \indent return;\\
+    \indent \}\\
+\\
+    \indent int middle = (left + right) / 2;\\
+    \textit{\indent // Recursively sort L\\}
+    \indent mergeSort(magicItemsArray, left, middle);\\
+    \textit{\indent // Recursively sort R\\}
+    \indent mergeSort(magicItemsArray, middle + 1, right);\\
+    \indent merge(magicItemsArray, left, middle, right);\\
+\}\\
+\\
+\textit{// Since "pivot" is an int, this function needs to return int as well\\}
+int partition (string magicItemsArray[], int left, int right) \{\\
+    \textit{\indent // Selecting the pivot, which will be the last item\\}
+    \indent string pivot = magicItemsArray[right];\\
+\\
+    \textit{\indent // Item just before the final item (used for swapping)\\}
+    \indent int i = (left - 1);\\
+    \indent for (int j = left; j $<$ right; j++) \{\\
+        \indent \indent quicksortComparisons += 1;\\
+        \textit{\indent \indent // If the current item is less than or equal to pivot\\}
+        \indent \indent if(magicItemsArray[j] $<=$ pivot) \{\\
+            \indent \indent \indent i++;\\
+            \textit{\indent \indent \indent // Found this function that will automatically swap the two items\\}
+            \indent \indent \indent swap(magicItemsArray[i], magicItemsArray[j]);\\
+        \indent \indent \}\\
+    \indent \}\\
+    \textit{\indent // Pivot goes to the right of the low side\\}
+    \indent swap(magicItemsArray[i + 1], magicItemsArray[right]);\\
+\\
+    \textit{\indent // Return the new index of pivot\\}
+    \indent return (i + 1);\\
+\}\\
+\\
+void quicksort(string magicItemsArray[], int left, int right) \{\\
+    \textit{\indent // Will continue until the starting "left" item is less than the "right" item\\}
+    \indent if (left $<$ right) \{\\
+        \textit{\indent \indent // Partition subarray around the pivot, which is in magicItemsArray[pivot]\\}
+        \indent \indent int p = partition(magicItemsArray, left, right);\\
+\\
+        \textit{\indent \indent // Sorts the items before and after pivot\\}
+        \indent \indent quicksort(magicItemsArray, left, p - 1);\\
+        \indent \indent quicksort(magicItemsArray, p + 1, right);\\
+    \indent \}\\
+\}\\
+\\
+\textit{// Any lines of code in main() will be executed automatically once the program is run.\\}
+int main() \{\\
+    \textit{\indent // Array \\
+    \indent // Allows us to open and read data from the file into the array\\ }
+    \indent ifstream file;\\
+    \textit{\indent // If we want to add more items to the array, we can modify its length in this single line\\}
+    \indent const int size = 666;\\
+    \indent string magicItemsArray[size];\\
+    \indent file.open("magicItems.txt");\\
+\\
+    \textit{\indent // Failsafe in case the user does not have the file\\}
+    \indent if (file.fail()) \{\\
+       \indent \indent cout $<<$ "File failed to open" $<<$ endl;\\
+        \textit{\indent \indent // Returning 1 indicates to the program that something has gone wrong\\}
+        \indent \indent return 1;\\
+    \indent \}\\
+\\
+    \textit{\indent // Keeps track of how many lines have been read from magicItems so far\\}
+    \indent int lines = 0;\\
+\\
+    \textit{\indent // eof() is part of ifstream. It will return "true" once we reach the end of the file\\
+    \indent // As such, as long as eof() = false, we will continue to add to the array\\}
+    \indent while(!file.eof()) \{\\
+        \textit{\indent \indent // getline() reads the next line from magicitems\\
+        \indent \indent // It will then store that line in magicItemsArray at index "lines"\\}
+        \indent \indent getline(file, magicItemsArray[lines]);\\
+        \indent \indent lines += 1;\\
+\\
+        \textit{\indent \indent // Failsafe for if we accidentally reach the end of the array before we have added all the items from the text file\\}
+        \indent \indent if (lines == size) \{\\
+            \indent \indent \indent //cout $<<$ "The array is full! There is no more storage space." $<<$ endl;\\
+            \textit{\indent \indent \indent// End the loop\\}
+            \indent \indent \indent break;\\
+        \indent \indent \}\\
+    \indent \}\\
+\\
+    \textit{\indent // Don't forget to close the file when done\\}
+    \indent file.close();\\
+\\
+    \textit{\indent // Leaving this outside the loop, otherwise it will print more than once\\}
+    \indent cout $<<$ "The following items from the list are palindromes: " $<<$ endl;\\
+\\
+    \textit{\indent // The loop is set to the current size of magicItemsArray\\}
+    \indent for (int i = 0; i $<$ size; i++) \{\\
+        \indent \indent string poppedStack = "";\\
+        \indent \indent string dequeuedQueue = "";\\
+        \textit{\indent \indent // Need to declare the sizes as separate variables.\\
+        \indent \indent // Otherwise, the size will change as we pop the stack and queue, and we will miss characters\\}
+        \indent \indent int stackSize = 0;\\
+        \indent \indent int queueSize = 0;\\
+        \textit{\indent \indent // This is so we can save the current item as it is (without changing the spaces and capitalizations)\\
+        \indent \indent // This way, if it is a palindrome, we can print it as it originally appeared\\}
+        \indent \indent string currentItem = magicItemsArray[i];\\
+\\
+        \textit{\indent \indent // Adding the characters to the stack\\}
+        \indent \indent for (int j = 0; j $<$ magicItemsArray[i].length(); j++) \{\\
+            \textit{\indent \indent \indent //Will only add to the stack if the character is not a space\\}
+            \indent \indent \indent if (magicItemsArray[i][j] != ' ') \{\\
+                \textit{\indent \indent \indent \indent // Converts characters to lowercase\\}
+                \indent \indent \indent \indent magicItemsArray[i][j] = tolower(magicItemsArray[i][j]);\\
+                \textit{\indent \indent \indent \indent // Pushes and enqueues the single letter at j to the stack and queue, respectively\\}
+                \indent \indent \indent \indent push(magicItemsArray[i].substr(j, 1));\\
+                \indent \indent \indent \indent enqueue(magicItemsArray[i].substr(j, 1));\\
+                \indent \indent \indent \indent stackSize += 1;\\
+                \indent \indent \indent \indent queueSize += 1;\\
+            \indent \indent \indent \}\\
+        \indent \indent \}\\
+\\
+        \textit{\indent \indent // Popping the stack and storing the result as "poppedStack."\\}
+        \indent \indent for (int j = 0; j $<$ stackSize; j++) \{\\
+            \indent \indent \indent poppedStack += stack[stackTop];\\
+            \indent \indent \indent pop();\\
+        \indent \indent \}\\
+        \textit{\indent \indent // Dequeuing the queue and storing the result as "dequeuedQueue."\\}
+        \indent \indent for (int j = 0; j $<$ queueSize; j++) \{\\
+            \indent \indent \indent dequeuedQueue += queue[queueFront];\\
+            \indent \indent \indent dequeue();\\
+        \indent \indent \}\\
+\\
+        \textit{\indent \indent // If poppedStack and dequeuedQueue are equal, then the string is a palindrome and is thus printed\\}
+        \indent \indent if (poppedStack == dequeuedQueue) \{\\
+            \indent \indent \indent cout $<<$ currentItem $<<$ endl;\\
+        \indent \indent \}\\
+    \indent \}\\
+\\
+\pagebreak
+\\
+    \textit{\indent // Sorting\\
+\\
+    \indent // Initial Shuffle\\}
+    \indent shuffle(magicItemsArray, size);\\
+\\
+    \textit{\indent // Selection Sort\\}
+    \indent selectionSort(magicItemsArray, size);\\
+\\
+    \textit{\indent // Shuffle for Insertion Sort\\}
+    \indent shuffle(magicItemsArray, size);\\
+\\
+    \textit{\indent // Insertion Sort\\}
+    \indent insertionSort(magicItemsArray, size);\\
+\\
+    \textit{\indent // Shuffle for Merge Sort\\}
+    \indent shuffle(magicItemsArray, size);\\
+\\
+    \textit{\indent // Merge Sort\\}
+    \indent mergeSort(magicItemsArray, 0, size - 1);\\
+\\
+    \textit{\indent // Shuffle for Quicksort\\}
+    \indent shuffle(magicItemsArray, size);\\
+\\
+    \textit{\indent // Quicksort\\}
+    \indent quicksort(magicItemsArray, 0, size - 1);\\
+\\
+    \textit{\indent // For checking that the array is alphabetized:\\}
+    \indent /* for (int i = 0; i $<$ size; i++) \\
+        \indent \indent cout $<<$ magicItemsArray[i] $<<$ endl; */\\
+\\
+    \indent cout $<<$ "Total Comparisons for Merge Sort: " $<<$ mergeComparisons << endl;\\
+    \indent cout $<<$ "Total Comparisons for Quicksort: " $<<$ quicksortComparisons $<<$ endl;\\
+\\
+    \textit{\indent // Informs us that the function executed successfully\\}
+    \indent return 0;\\
+\\\}}
+\end {linenumbers}
+
+\end{document}

@@ -1,0 +1,186 @@
+[gd_scene load_steps=30 format=3 uid="uid://dmryr00gvdvs1"]
+
+[ext_resource type="Script" path="res://scripts/boulder.gd" id="1_4ws53"]
+[ext_resource type="Texture2D" uid="uid://o2i5kgukcpem" path="res://PNGs/Boulder/Boulder-1.png.png" id="1_7obtl"]
+[ext_resource type="PackedScene" uid="uid://bj7fed5b2amna" path="res://Scenes/grapple_point.tscn" id="2_daftx"]
+[ext_resource type="Texture2D" uid="uid://dx4txxns0abjb" path="res://PNGs/Boulder/Boulder Breaking 1.png" id="3_utefr"]
+[ext_resource type="Texture2D" uid="uid://djc4oxlls61fn" path="res://PNGs/Boulder/Boulder Breaking 2.png" id="4_1i8xn"]
+[ext_resource type="Texture2D" uid="uid://c1pgj6cxqcu5x" path="res://PNGs/Boulder/Boulder Breaking 3.png" id="5_nli6a"]
+[ext_resource type="Texture2D" uid="uid://bkgcr61km7wq5" path="res://PNGs/Boulder/Boulder Breaking 4.png" id="6_5aaw7"]
+[ext_resource type="Texture2D" uid="uid://bi5f5o5vgsb1y" path="res://PNGs/Boulder/Boulder Breaking 5.png" id="7_isdua"]
+[ext_resource type="Texture2D" uid="uid://bvqev2s6v7sb6" path="res://PNGs/Boulder/Boulder Breaking 6.png" id="8_eq12o"]
+[ext_resource type="Texture2D" uid="uid://dh8wata78scyu" path="res://PNGs/Boulder/Boulder Breaking 7.png" id="9_byqjj"]
+[ext_resource type="Texture2D" uid="uid://c5shll0d3dbt3" path="res://PNGs/Boulder/Boulder Breaking 8.png" id="10_4o32v"]
+[ext_resource type="Texture2D" uid="uid://bo765a8xubkce" path="res://PNGs/Boulder/Boulder Breaking 9.png" id="11_jtaqs"]
+[ext_resource type="Texture2D" uid="uid://dn4nmiytmpfh" path="res://PNGs/Boulder/Boulder Breaking 10.png" id="12_f4ama"]
+[ext_resource type="Texture2D" uid="uid://duhhg0ug38snu" path="res://PNGs/Boulder/Boulder Breaking 11.png" id="13_ff1na"]
+[ext_resource type="Texture2D" uid="uid://b1fr73br11q5i" path="res://PNGs/Boulder/Boulder Breaking 12.png" id="14_y5beb"]
+[ext_resource type="Texture2D" uid="uid://dqr6wavcvvyf" path="res://PNGs/Boulder/Boulder Breaking 13.png" id="15_jj8dc"]
+[ext_resource type="Texture2D" uid="uid://cib6yvqfwhar2" path="res://PNGs/Boulder/Boulder Breaking 14.png" id="16_h4xui"]
+[ext_resource type="Texture2D" uid="uid://k04ud6wt104b" path="res://PNGs/Boulder/Boulder Breaking 15.png" id="17_c5mpt"]
+[ext_resource type="Texture2D" uid="uid://cnlx0crdejibm" path="res://PNGs/Boulder/Boulder Breaking 16.png" id="18_84c1k"]
+[ext_resource type="Texture2D" uid="uid://ek0qfhr2gcus" path="res://PNGs/Boulder/Boulder Breaking 17.png" id="19_a738c"]
+[ext_resource type="Texture2D" uid="uid://c5pqabwromg1p" path="res://PNGs/Boulder/Boulder Breaking 18.png" id="20_bg8n3"]
+[ext_resource type="Texture2D" uid="uid://brk0uuo86qqrd" path="res://PNGs/Boulder/Boulder Breaking 19.png" id="21_filp3"]
+[ext_resource type="Texture2D" uid="uid://cr7yf7neky6kx" path="res://PNGs/Boulder/Boulder Breaking 20.png" id="22_lx3l4"]
+[ext_resource type="Texture2D" uid="uid://cx2yeo1riqngs" path="res://PNGs/Boulder/Boulder Breaking 21.png" id="23_cwulq"]
+[ext_resource type="Texture2D" uid="uid://g6bskwx7vjqh" path="res://PNGs/Boulder/Boulder Breaking 22.png" id="24_x1l3y"]
+[ext_resource type="Texture2D" uid="uid://b65if27aatl7p" path="res://PNGs/Boulder/Boulder Breaking 23.png" id="25_w355b"]
+[ext_resource type="Texture2D" uid="uid://7o4m3f1moj46" path="res://PNGs/Boulder/Boulder Breaking 24.png" id="26_wtsgl"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dvywj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7obtl")
+}],
+"loop": true,
+"name": &"boulder",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_utefr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1i8xn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nli6a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_5aaw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_isdua")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eq12o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_byqjj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_4o32v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jtaqs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_f4ama")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ff1na")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_y5beb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_jj8dc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_h4xui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_c5mpt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_84c1k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_a738c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_bg8n3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_filp3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_lx3l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_cwulq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_x1l3y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_w355b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_wtsgl")
+}],
+"loop": true,
+"name": &"crumble",
+"speed": 24.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u1rxk"]
+radius = 30.0
+
+[node name="Boulder" type="RigidBody2D"]
+collision_layer = 16
+collision_mask = 115
+mass = 10.0
+linear_damp = 3.0
+script = ExtResource("1_4ws53")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_dvywj")
+animation = &"crumble"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_u1rxk")
+
+[node name="grapple_point" parent="." groups=["boulder_grapple_point"] instance=ExtResource("2_daftx")]
+
+[node name="AnimatedSprite2D" parent="grapple_point" index="0"]
+visible = false
+
+[node name="DamageDetectors" type="Node2D" parent="."]
+
+[node name="DamageDetector" type="RayCast2D" parent="DamageDetectors"]
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector2" type="RayCast2D" parent="DamageDetectors"]
+rotation = 1.5708
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector3" type="RayCast2D" parent="DamageDetectors"]
+rotation = 3.14159
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector4" type="RayCast2D" parent="DamageDetectors"]
+rotation = 4.71239
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector5" type="RayCast2D" parent="DamageDetectors"]
+rotation = 0.785398
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector6" type="RayCast2D" parent="DamageDetectors"]
+rotation = 2.35619
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector7" type="RayCast2D" parent="DamageDetectors"]
+rotation = 3.92699
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="DamageDetector8" type="RayCast2D" parent="DamageDetectors"]
+rotation = 5.49779
+target_position = Vector2(0, 35)
+collision_mask = 16
+
+[node name="CrumbleTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="CrumbleTimer" to="." method="_on_crumble_timer_timeout"]
+
+[editable path="grapple_point"]

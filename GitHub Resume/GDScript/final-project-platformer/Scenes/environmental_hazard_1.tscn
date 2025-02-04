@@ -1,0 +1,68 @@
+[gd_scene load_steps=14 format=3 uid="uid://ejtc8ind7m3a"]
+
+[ext_resource type="Texture2D" uid="uid://cf0wm3shpula4" path="res://PNGs/Environmental Hazards/Environmental Hazard-1.png.png" id="1_fttar"]
+[ext_resource type="Script" path="res://scripts/environmental_hazard_1.gd" id="1_wwrwm"]
+[ext_resource type="Texture2D" uid="uid://c1u4evkcpiouq" path="res://PNGs/Environmental Hazards/Environmental Hazard-2.png.png" id="2_61drt"]
+[ext_resource type="Texture2D" uid="uid://b5um3r8f8xa" path="res://PNGs/Environmental Hazards/Environmental Hazard-3.png.png" id="3_f1ah7"]
+[ext_resource type="Texture2D" uid="uid://c38m61ewn62c5" path="res://PNGs/Environmental Hazards/Environmental Hazard-4.png.png" id="4_rssnv"]
+[ext_resource type="Texture2D" uid="uid://b78do3cbnfat8" path="res://PNGs/Environmental Hazards/Environmental Hazard-5.png.png" id="5_83vln"]
+[ext_resource type="Texture2D" uid="uid://0v1ogn88hdlk" path="res://PNGs/Environmental Hazards/Environmental Hazard-6.png.png" id="6_tqfce"]
+[ext_resource type="Texture2D" uid="uid://qr8xnivnrkgr" path="res://PNGs/Environmental Hazards/Environmental Hazard-7.png.png" id="7_oyije"]
+[ext_resource type="Texture2D" uid="uid://bq5r6uonv25e4" path="res://PNGs/Environmental Hazards/Environmental Hazard-8.png.png" id="8_vpv3b"]
+[ext_resource type="Texture2D" uid="uid://diec3yfucnwbt" path="res://PNGs/Environmental Hazards/Environmental Hazard-9.png.png" id="9_7r2od"]
+[ext_resource type="Texture2D" uid="uid://b6it352eb5grx" path="res://PNGs/Environmental Hazards/Environmental Hazard-10.png.png" id="10_erwfb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufxow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fttar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_61drt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_f1ah7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_rssnv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_83vln")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_tqfce")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_oyije")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vpv3b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7r2od")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_erwfb")
+}],
+"loop": true,
+"name": &"glow",
+"speed": 6.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_060hv"]
+size = Vector2(64, 37)
+
+[node name="EnvironmentalHazard1" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 5
+script = ExtResource("1_wwrwm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ufxow")
+animation = &"glow"
+frame_progress = 0.436652
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 13.5)
+shape = SubResource("RectangleShape2D_060hv")

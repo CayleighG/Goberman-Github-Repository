@@ -1,0 +1,116 @@
+[gd_scene load_steps=9 format=3 uid="uid://dqttqrg0x8cns"]
+
+[ext_resource type="PackedScene" uid="uid://ndjrr7prccu0" path="res://art/player.glb" id="1_iw101"]
+[ext_resource type="Script" path="res://player.gd" id="1_nquvi"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0ja4x"]
+radius = 0.768907
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_il2dw"]
+height = 0.1
+radius = 0.927074
+
+[sub_resource type="Animation" id="Animation_qlth0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vy0y0"]
+resource_name = "float"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 0.7, 1.2),
+"transitions": PackedFloat32Array(1, 2.07053, 1.03526),
+"update": 0,
+"values": [Vector3(0, 0.242603, 0), Vector3(0, 0.65, 0), Vector3(0, 0.35, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.5, 1.2),
+"transitions": PackedFloat32Array(0.420448, 0.420448, 1.03526),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.139626, 0, 0), Vector3(-0.15708, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h6o87"]
+_data = {
+"RESET": SubResource("Animation_qlth0"),
+"float": SubResource("Animation_vy0y0")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_l3lic"]
+radius = 1.05901
+
+[node name="Player" type="CharacterBody3D"]
+collision_mask = 14
+script = ExtResource("1_nquvi")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.285242, 0)
+
+[node name="Character" parent="Pivot" instance=ExtResource("1_iw101")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.707654, 0)
+shape = SubResource("SphereShape3D_0ja4x")
+
+[node name="MobDetector" type="Area3D" parent="."]
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MobDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.509028, 0)
+shape = SubResource("CylinderShape3D_il2dw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h6o87")
+}
+autoplay = "float"
+
+[node name="PowerUpDetector" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.295524, 0)
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PowerUpDetector"]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0.0350897, 0.549856, 0)
+shape = SubResource("CylinderShape3D_l3lic")
+
+[connection signal="body_entered" from="MobDetector" to="." method="_on_mob_detector_body_entered"]
+[connection signal="body_entered" from="PowerUpDetector" to="." method="_on_power_up_detector_body_entered"]

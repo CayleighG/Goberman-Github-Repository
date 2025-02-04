@@ -1,0 +1,463 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{backgroundColor}{rgb}{0.95,0.95,0.92}
+\definecolor{darkGreen}{rgb}{0.1,0.60,0.32}
+\lstdefinestyle{mystyle}{
+    language=C++,
+    backgroundcolor=\color{backgroundColor}, 
+    commentstyle=\color{darkGreen},
+    keywordstyle=\color{magenta},
+    numbers=left,
+    xleftmargin=2em,
+    frame=single,
+    framexleftmargin=2em
+}
+
+\lstset{style=mystyle}
+
+\title{Algorithms Assignment 2 - Documentation}
+\author{Cayleigh Goberman}
+\date{15 October 2024}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+..............................................................................
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+\section{A Brief Introduction}
+Hello once again! Before continuing on to other, possibly more interesting sections featured in this text, it is important to note that this document builds off of C++ code introduced in "Algorithms Assignment 1 - Documentation". Part 2, aka "the thing that is currently plastered across your screen", mostly covers new concepts such as linear search, binary search, and hash tables. You will find that the code employed here also includes setting up C++, reading items from a file into an array, and merge sort, but explanations for those riveting subjects can be found in Part 1. \\
+Still here? Perfect! Without further ado, let us jump into the first section: linear and binary search!
+
+\pagebreak
+\section{Linear and Binary Search}
+
+\subsection{Code}
+\textbf{Randomization} \\
+At this point in time, we have sorted each item alphabetically into an array (see Assignment 1, Merge Sort). Now, we need to decide which 42 items we will be searching for in our linear and binary searches. We can randomly select these items through the randomItems() function.
+
+\begin{lstlisting}
+std::string selectedItemsArray[42];
+randomItems(selectedItemsArray, magicItemsArray, size);
+\end{lstlisting}
+
+This function takes three arguments; the array we will be putting the random items into, the array we will be selecting the random items from, and the size of the array we will be selecting the random items from, which in this case is 666. \\
+Now that we have invoked the function, the program will employ it to select the 32 random items.
+
+\begin{lstlisting}
+void randomItems(std::string selectedItemsArray[], 
+std::string magicItemsArray[], int size){
+    int usedNumCount = 0;
+
+    int selectedNumbersArray[42];
+
+    /* Gives us a random seed as calculated using the 
+    internal clock. This ensures that we get different 
+    random numbers every time the program is run */
+    srand (time(NULL));
+
+    for (int i = 0; i < 42; i++){
+        /* We want 0 to be our minimum possible number 
+        (for position 0 in magicItemsArray) and we 
+        want size, or 666, to be our maximum. As such, 
+        our equation should be 0 + rand() % (size), or 
+        rand() % (size) */
+        int randomNum = rand() % (size);
+        bool unusedNum = true;
+
+        /* Failsafe to check if the same number is 
+        selected twice */
+        for (int j = 0; j < 42; j++){
+            if (selectedNumbersArray[j] == randomNum){
+                // The position has already been used
+                unusedNum = false;
+                /* We subtract 1 from i. If we do not, 
+                the loop continues even though this 
+                spot has not been filled, resulting in 
+                empty indexes at the end. */
+                i--;
+            }
+        }
+
+        if (unusedNum == true) {
+            selectedNumbersArray[usedNumCount] = 
+                randomNum;
+            usedNumCount++;
+            selectedItemsArray[i] = 
+                magicItemsArray[randomNum];
+        }
+    }
+}
+\end{lstlisting}
+
+To begin, we set an integer, usedNumCount, equal to 0. This way, we can insert selected index numbers into selectedNumbersArray. This will keep track of which indexes have been selected. \\
+Following this, we employ srand(time(NULL)) to create a new random number seed every time we run the program. This method utilizes the internal clock, which is always changing. If we did not use the internal clock, the so-called "random" numbers will be the same every time the program is run. \\
+The next for loop is where we select our 42 random items. First, we calculate a random number between 0 and 666, so as to correspond with the index numbers in magicItemsArray. We also set the boolean unusedNum to true, which indicates that the random index has not yet been used. \\
+The next for loop acts as a failsafe to prevent the same random number from accidentally being selected twice. If any of the numbers in selectedNumbersArray are equal to randomNum, then that index position has already been used. As such, unusedNum is set to false and i is reduced by one, since we did not actually select a new random item during that loop. If we do not subtract one from i, then the spot remains unfilled, resulting in empty indexes and less than 42 items selected once the for loop is finished. With that, the second for loop is finished. \\
+Finally, we reach the if statement at the end of the first for loop. This statement checks if unusedNum is equal to true. If it is, then randomNum has not been selected yet. As such, we can place the random number in the selectedNumberArray at index usedNumCount, which is then incremented by one. The next time the loop is run, we will be able to see that the number has already been used and is present in selectedNumberArray. If it is accidentally generated twice, then we will not use it twice. \\
+With that, we are completely sure that the new random number has not been selected before. We are now able to take the item at the corresponding index in magicItemsArray and push it to selectedItemsArray, bringing us one item closer to 42 random items. Once the 42 items have been selected, the function is complete. \\
+
+\textbf{Linear Search} \\
+Now that we have selected our 42 random items, we can search for them in magicItemsArray via linear search.
+
+\begin{lstlisting}
+// Declared at beginning of code document
+double linearSearchComparisons = 0;
+
+for (int i = 0; i < 42; i++) {
+    std::string key = selectedItemsArray[i];
+    linearSearch(magicItemsArray, key, size);
+}
+\end{lstlisting}
+
+linearSearchComparisons is defined outside of the main functions as a global variable. As such, linearSearch() will be able to increment it each time a comparison is made. We can then call on it in the main() function to calculate the overallaverage amount of comparisons. \\ This loop will go through each item in selectedItemsArray and locate them in magicItemsArray. The current item is assigned to the variable "key". magicItemsArray, key, and the size of magicItemsArray (666) are then taken as arguments for linearSearch().
+
+\begin{lstlisting}
+void linearSearch(std::string magicItemsArray[], 
+std::string key, int size){
+    int comparisonsForThisKey = 0;
+
+    for (int i = 0; i < size; i++){
+        linearSearchComparisons++;
+        comparisonsForThisKey++;
+        if (magicItemsArray[i] == key){
+            //key has been found
+            break;
+        }
+    }
+    std::cout << "Total comparisons while searching 
+        for'" << key << "': " << comparisonsForThisKey 
+        << std::endl;
+}
+\end{lstlisting}
+
+We start linear search by creating the variable "comparisonsForThisKey". This is not necessary for the success of linear search, but it allows us to keep track of how many comparisons were made while searching for the key. Following this, we get into the main for loop of this function. Linear search simply searches sequentially through the entirity of magicItemsArray until it finds an item that matches key. Once it has found the key, it breaks out of the for loop and prints how many comparisons were required to find the item. The for loop also increments comparisonsForThisKey and linearSearchComparisons by one for each loop. linearSearchComparisons is essential for calculating the average amount of comparisons once all 42 items have been found.
+
+\begin{lstlisting}
+/* Declared at the beginning of the code document so 
+that we can use std::setprecision(2) */
+#include <iomanip>
+
+...
+
+double avgLinear = linearSearchComparisons / 42;
+/* - "fixed" ensures that the decimal point is always 
+positioned in the same place
+- "showpoint" allows us to always display the decimal 
+point, even when all decimal values are 0
+- "setprecision(2)" ensures that only two decimal 
+places are shown */
+std::cout << "\nAverage Comparisons in Linear Search:" 
+    << std::fixed << std::showpoint << 
+    std::setprecision(2) << avgLinear << std::endl;
+\end{lstlisting}
+
+Finally, now that we have found the 42 items, we can calculate and print the average number of comparisons. This can be achieved by dividing linearSearchComparisons by 42. We can then employ a variety of C++ functions to print the average up to two decimal places. It is important to note that you must include "\#include $<$iomanip$>$" in order to use "std::setprecision(2)", which ensures that only two decimal places are shown.\\
+
+
+\textbf{Binary Search} \\
+Similarly to linear search, we will use a for loop to search for every item in selectedItemsArray in magicItemsArray.
+
+\begin{lstlisting}
+// Declared at beginning of code document
+double binarySearchComparisons = 0;
+
+...
+
+for (int i = 0; i < 42; i++) {
+    std::string key = selectedItemsArray[i];
+    binarySearch(key, magicItemsArray, 0, size);
+}
+\end{lstlisting}
+
+In addition to key, magicItemsArray, and size, binary search takes an integer as the starting point of the array, which in this case is index 0. \\ \\ \\
+
+\begin{lstlisting}
+void binarySearch(std::string key, 
+std::string magicItemsArray[], int start, int end){
+    int low = start;
+    int high = std::max(start, end - 1);
+    int comparisonsForThisKey = 0;
+
+    while (low < high) {
+        int mid = (low + high) / 2;
+        comparisonsForThisKey++;
+        binarySearchComparisons++;
+
+        // If key is equal to mid
+        if (magicItemsArray[mid] == key){
+            break;
+        }
+        
+        // If key is smaller, ignore right half
+        if (key <= magicItemsArray[mid]){
+            high = mid;
+        }
+
+        // If key is greater, ignore left half
+        if (magicItemsArray[mid] < key){
+            low = mid + 1;
+        }
+    }
+    std::cout << "Total comparisons while searching 
+        for'" << key << "': " << comparisonsForThisKey 
+        << std::endl;
+}
+\end{lstlisting}
+
+The function begins by defining the lower and upper bounds of the binary search. At the moment, they are equal to low (or 0, as we assigned it) and the highest value between start and end + 1 (0 and size, or 666, to correspond with the indexes in magicItemsArray). Similarly to linear search, we will also define a variable to keep track of the number of comparisons required to locate our key. \\
+The while loop will continue as long as low is less than high. In other words, if the key is not found by the time low equals high, then the while loop will end. At the beginning of the loop, we must define where the middle of the section is, which can be calculated by adding low to high and dividing the sum by two. We will also add one to comparisonsForThisKey and binarySearchComparisons. The following if statements present in the loop check to see if the key has been located. \\
+If the middle value is equal to the key, then we have successfully located the key, and can break out of the while loop. However, if the key is smaller than the middle value, we will ignore the right half of the array by setting the new high value equal to the middle value. If the key is greater than the middle value, then we will ignore the left half of the array by setting the new low value equal to the middle value plus one.
+Once the while loop terminates, we can print the number of comparisons it took to search for the key. \\
+
+\begin{lstlisting}
+/* Remember to add #include <iomanip> at the beginning 
+of the code so you can use std::setprecision(2)! */
+#include <iomanip>
+
+...
+
+float avgBinary = binarySearchComparisons / 42;
+std::cout << "Average Comparisons in Binary Search: " 
+    << std::fixed << std::showpoint << 
+    std::setprecision(2) << avgBinary << std::endl;
+\end{lstlisting}
+
+Now that we have located all 42 items via binary search, we can calculate the average number of comparisons. Like linear search, we can do this by dividing binarySearchComparisons by 42. We will then print the average up to the second decimal place.
+
+\subsection{Results}
+\begin{center}
+\begin{tabular}{||c | c c ||} 
+ \hline
+ Search: & Linear & Binary\\ [0.5ex] 
+ \hline\hline
+ Test 1: & 371.67 & 8.43\\ 
+ \hline
+ Test 2: & 275.14 & 8.57\\
+ \hline
+ Test 3: & 341.69 & 8.02\\
+ \hline
+ Test 4: & 339.81 & 8.62\\
+ \hline
+ Test 5: & 331.10 & 8.60\\
+ \hline
+ Average: & 331.88 & 8.45\\ [1ex] 
+ \hline
+\end{tabular}
+\\
+\end{center}
+
+\textbf{Linear Search} \\
+When using linear search to search through an array of items, the search goes straight through the list sequentially. In other words, the amount of effort in linear search is directly proportionate to the number of items in the list. As such, the asymptotic running time is O(n). In the best case scenario, the item we are searching for is the very first item in the list, whereas in the worst case, it is the very last item. However, most of the time, the item is somewhere in between the first and last item. Therefore, we can use the equation 0.5n to calculate the expected case for n items. If we have 666 items, then the equation is 0.5(666).
+\begin{center}
+    0.5n = 0.5(666) = 333
+\end{center}
+As can be observed in the above table, most comparison counts for linear search are in the general vicinity of 333, with one or two outliers where the item was earlier or later in the list. However, when we average the comparison counts, we get 331.88, which is only 1.12, or 0.34\%, less than 333. Thus, we can conclude that our linear search is functioning correctly. \\
+
+\textbf{Binary Search} \\
+Unlike linear search, binary search does not search through each individual item in a list until it locates its target. Instead, when applied to a sorted list, binary search selects the middle item. If that is not the targeted item, it excludes either the upper or lower half of the list, depending on if the target is greater than or less than the selected value. It will then select the middle value of the remaining half. It continues this pattern until the targeted item is located. As such, the asymptotic running time for binary search is O(logn). In other words, if the targeted value is the absolute last possible value, thus resulting in the worst case, it would take O(logn) time to find it. However, since the list is divided in half each time we compare values, the expected case for n rows is log\textsubscript{2}n.
+\begin{center}
+    log\textsubscript{2}n = log\textsubscript{2}666 = 9.38
+\end{center}
+Most of our comparison counts in the example are within the 8.00 - 8.70 range, thus giving us an average comparison count of 8.45. This 0.93, or 9.92\%, less than 9.38. As such, we can conclude that our binary search is most likely functioning correctly. 
+
+\pagebreak
+\section{Hash Table}
+\subsection{Code}
+\textbf{Creating the Hash Table} \\
+Before we create hash code to enter into the table, we need to create the table in the first place! To begin, we need to make a listNode structure.
+
+\begin{lstlisting}
+struct listNode {
+    std::string item;
+    listNode* next;
+};
+\end{lstlisting}
+
+This structure groups two variables in one place; the string "item", and the listNode "next" (by declaring "next" as a listNode within the structure itself, "next" acts as a pointer to listNode). listNode will assist us in creating the hash table as well as when we want to chain linked lists into the hash table indexes.\\
+Now that we have set up listNode for later use, we can create the hash table.
+
+\begin{lstlisting}
+// Declared at beginning of code document
+#include <vector>
+
+...
+
+std::vector<listNode*> hashTable(250);
+int hashTableSize = 250;
+int hashValues[size];
+\end{lstlisting}
+
+First, we add "\#include $<$vector$>$" at the top of the file so that we may make use of vectors. Once this is accomplished, we can create a listNode vector of size 250. This will serve as our hash table, or hashTable. Next, we create an integer variable, hashTableSize, that corresponds to the size of hashTable. We can use hashTableSize whenever we want to refer to the numerical size of hashTable; as such, if we want to change the size of the hash table, we would only need to edit the vector hashTable and the integer hashTableSize. \\
+Finally, before we load our items into the hash table, we will need the items' hash codes. The array hashValues will store these values until we need to employ them. \\
+
+
+\textbf{Generating the Hash Code} \\
+Now that we have set up our hashTable and other required variables, we need to convert our magic items into their ASCII values and scale said values to fit in the hash table. Once we have the values, we can store each item at the hashTable index that corresponds to their respective hash code. \\ \\ \\
+
+\begin{lstlisting}
+int makeHashCode (std::string magicItem, 
+int hashTableSize){
+    int length = magicItem.size();
+    int letterNum = 0;
+    // Turning all letters in magicItem to uppercase
+    for (int i = 0; i < length; i++){
+        if (magicItem[i] != ' '){
+            magicItem[i] = toupper(magicItem[i]);
+        }
+    }
+
+    /* Iterate over all letters in the string, thus 
+    totalling their ASCII values */
+    for (int i = 0; i < length; i++){
+        if (magicItem[i] != ' '){ 
+            char letter = magicItem[i];
+            /* Converts the character into its ASCII 
+            value */
+            int value = static_cast<int>(letter);
+            letterNum = letterNum + value;
+        }
+    }
+
+    // Scale letterNum to fit in hashTableSize
+    int hashCode = letterNum % hashTableSize; 
+
+    return hashCode;
+}
+\end{lstlisting}
+
+When we call the makeHashCode function, it will take hashTableSize and one magic item from the sorted magicItemsArray as its arguments. We will employ a "for" loop to iterate through each magic item in magicItemsArray so as to ensure that they all receive a hash code (see "Loading the Items Into the Hash Table"). \\
+As we begin the function, we define two variable; the integers "length" and "letterNum". Since "length" is equal to the size of magicItem, we do not necessarily need the variable when we can instead use "magicItem.size()". However, it does make our code slightly easier to read. On the other hand. letterNum will let us keep track of the sum of the letter values. \\
+The "for" loop that follows these variables capitalizes each letter in magicItem and ignores spaces. This allows us to iterate over all letters in the string in the next "for" loop. \\
+This next "for" loop is where most of the conversion takes place. Each letter gets placed into the character variable "letter", then converted into its ASCII value. The ASCII value is then added to letterNum. By the time the loop terminates, letterNum will equal the sum of all letters in magicItem. \\
+Finally, now that we have the ASCII values of the entire string, we can scale letterNum to fit into the hash table. We do this by taking "letterNum \% hashTableSize" and storing the result as the integer hashCode. With the function successfully completed, we can return hashCode.\\
+
+
+\textbf{Loading the Items Into the Hash Table}
+\begin{lstlisting}
+int hashCode = 0;
+
+for (int i = 0; i < size; i++) {
+    hashCode = makeHashCode(magicItemsArray[i], 
+        hashTableSize);
+    /* Formats the output. 03d indicates zero padding, 
+    minimum of three digits of width of the output,
+    and that the argument is an integer 
+    (d for decimal) */
+    //std::cout << "hashCode: ";
+    //printf("%03d\n", hashCode);
+    
+    // Make a new list node for this magic item.
+    listNode* lineToBeAppended = new listNode();
+    lineToBeAppended->item = magicItemsArray[i];
+    lineToBeAppended->next = nullptr;
+    if (hashTable[hashCode] == NULL){
+        hashTable[hashCode] = lineToBeAppended;
+    }
+    else {
+        listNode* pointer = hashTable[hashCode];
+        while (pointer->next != nullptr){
+            pointer = pointer->next;
+        }
+        pointer->next = lineToBeAppended;
+    }
+}
+\end{lstlisting}
+
+The code in this section is inside a "for" loop that addresses each item in magicItemsArray. Before we start the loop, we need to declare hashCode as a global integer at the top of the file. This will allow it to be accessed by both makeHashCode() and our "for" loop, which is in main(). As we start the loop, we will use makeHashCode() to return the hashCode of the item at i. In the above example, this is followed by some code that prints the hashCode, but it is not necessary and is thus commented out for the moment. \\
+The next several lines of code deal with adding new items to hashTable. We begin by creating a new listNode called lineToBeAppended and set its "item" variable equal to the item at magicItemsArray[i]. At the moment, its "next" variable is set to nullptr. If there is no item in hashTable at the index equal to hashCode, then this is all we need to do. lineToBeAppended is added to index hashCode in hashTable. \\
+However, there are 666 items in magicItemsArray and only 250 indexes in hashTable. What happens when a collision inevitably occurs? \\
+The problem of collision is why we are using linked lists. When we need to add more than one item to an index point, we set the "next" of the first item equal to the listNode of the second item. Then, since the second item is now the end of the list, we set its "next" equal to nullptr. We can observe this in the "else" statement under if(hashTable[hashCode] == NULL). \\ 
+First, we make a new listNode that is equal to the head of the linked list at hashTable[hashCode], or simple listNode* pointer = hashTable[hashCode]. We then check if the "next" variable in pointer is equal to nullptr. If it is not, we trace along the linked list (pointer = pointer->next) until "next" is equal to nullptr. At this point, we can change that nullptr to be equal to lineToBeAppended. As can be observed earlier in the code, we have already set "item" of lineToBeAppended to the item at magicItemsArray[i], and its "next" variable equal to nullptr. As such, the index at hashTable[hashCode] is now equal to the previous list of items plus the new item. The list is closed by lineToBeAppended's nullptr in "next". \\
+
+
+\textbf{Searching the Hash Table} \\
+If you can recall, back when we were utilizing linear and binary search, we generated 42 random items to be pulled from magicItemsArray. These random items were then stored in selectedItemsArray. Now that we have successfully created the hash table and stored our items in it, we can search it for the 42 items stored in selectedItemsArray.
+
+\begin{lstlisting}
+std::cout << "\nSearching the Hash Table" << std::endl;
+for (int i = 0; i < 42; i++){
+    int localComparisons = 0;
+    std::string itemName = selectedItemsArray[i];
+    hashCode = makeHashCode(selectedItemsArray[i],
+        hashTableSize);
+
+    listNode* pointer = hashTable[hashCode];
+    hashSearchComparisons++;
+    localComparisons++;
+    while (pointer->item != itemName){
+        hashSearchComparisons++;
+        localComparisons++;
+        pointer = pointer->next;
+        if (pointer->next == nullptr && 
+        pointer->item != itemName) {
+            std::cout << itemName << " not found" 
+                << std::endl;
+            break;
+        }
+    }
+    if (pointer->item == itemName){
+        hashSearchComparisons++;
+        localComparisons++;
+        /* Funny little if/else statement because I 
+        like proper grammer :) */
+        if (localComparisons <= 1){
+            std::cout << i + 1 << ". '" << itemName << 
+                "' found at hashTable[" << hashCode << 
+                "]" << " in " << localComparisons << 
+                " comparison" << std::endl;
+        } else {
+            std::cout << i + 1 << ". '" << itemName << 
+                "' found at hashTable[" << hashCode << 
+                "]" << " in " << localComparisons << " 
+                comparisons" << std::endl;
+        }
+    }
+}
+\end{lstlisting}
+
+Similarly to when we loaded items into the hash table, we will be using a "for" loop to search for each of the 42 items. We will start the loop by creating the integer localComparisons and the string itemName. localComparisons will allow us to calculate how many comparisons were made while searching for the current item. itemName will serve as an easier way to refer to selectedItemsArray[i]. We will also employ makeHashCode() to get the hash code for the current item. \\
+We start to search for our item by creating a listNode, pointer, equal to the hashTable index at hashCode. Since this is one comparison, we increment both the local (localComparisons) and the global (hashSearchComparisons) comparison count by one.. We then check if pointer's "item" is equal to itemName. \\
+If it is not equal to itemName, we enter a "while" loop. Since there is a comparison for every loop of the "while" loop, we start by incrementing our comparison counts by one. pointer is then set equal to "next". Finally, before we continue the "while" loop, we check if we have reached the end of the linked list at index point hashCode. If "next" is a nullptr and "item" is not equal to itemName, then the item was not found in that linked list. If this occurs, we print "{itemName} was not found" and end the "while" loop. If we do not add this failsafe, the loop has a chance of crashing the program if the item is not found. \\
+Now that we have completed the "while" loop, we do one final check to ascertain if pointer's "item" is equal to itemName. If it is, we increment hashSearchComparisons and localComparisons one more time, then print where the item was found. \\
+
+
+\subsection{Results}
+\begin{center}
+\begin{tabular}{||c | c ||} 
+ \hline
+ Hash Table Search & Average Number of Comparisons\\ [0.5ex] 
+ \hline\hline
+ Test 1: & 3.26\\ 
+ \hline
+ Test 2: & 3.55\\
+ \hline
+ Test 3: & 3.21\\
+ \hline
+ Test 4: & 3.00\\
+ \hline
+ Test 5: & 3.69\\
+ \hline
+ Overall Average: & 3.34\\ [1ex] 
+ \hline
+\end{tabular}
+\\
+\end{center}
+
+The asymptotic running time for searching a hash table with chaining is \\ O(1 + $\propto$), where $\propto$ is the average chain length. In other words, if n equals the number of items and s equals the number of spaces in the hash table, then we can write the asymptotic running time as O(1 + (n/s)). This is due to the fact that most comparisons take place in the chains themselves. Once we have the hash code of the item, we can immediately navigate to the hash index that corresponds to the hash code. This corresponds to one comparison, or the "1" in O(1 + $\propto$). We then linearly search through each item in the chain and stop once we find the desired item. As such, comparisons only occur when we are linearly checking through the list. \\
+It is worth noting that this analysis assumes that there are multiple items per index in the hash table. If the number of items is equal to the number of slots in the hash table, and each index has only one item, then the asymptotic running time for searching a hash table is O(1). However, since our hash table is chained, it most likely has a runtime of O(1 + $\propto$). \\
+In our example, we have 666 items and 250 spaces in the hash table. If we apply this to O(1 + $\propto$), we get:
+\begin{center}
+    O(1 + $\propto$) = O(1 + (666/250)) = 3.664
+\end{center}
+This calculation states that our average comparison count should be about 3.664 comparisons. If we refer back to the table, we can see that the overall average number of comparisons is 3.34. This is only 0.324, or 8.84\%, less than 3.664. As such, we can reasonably conclude that our hash table search is functioning correctly. 
+
+\end{document}

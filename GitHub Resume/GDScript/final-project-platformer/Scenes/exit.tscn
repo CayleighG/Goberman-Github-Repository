@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://bew8kwn7gys3o"]
+
+[ext_resource type="Texture2D" uid="uid://dnp3pgohmno7v" path="res://PNGs/Exit Gate 1.png" id="1_yd5cn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xmk1o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_yd5cn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8yp7c"]
+radius = 5.33333
+height = 96.0
+
+[node name="Exit" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
+collision_layer = 128
+collision_mask = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_xmk1o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-16, 26.6667)
+shape = SubResource("CapsuleShape2D_8yp7c")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-5.33333, 26.6667)
+shape = SubResource("CapsuleShape2D_8yp7c")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(5.33333, 26.6667)
+shape = SubResource("CapsuleShape2D_8yp7c")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2(16, 26.6667)
+shape = SubResource("CapsuleShape2D_8yp7c")

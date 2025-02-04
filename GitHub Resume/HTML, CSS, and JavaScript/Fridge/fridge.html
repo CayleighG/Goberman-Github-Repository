@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "utf-8">
+        <title>
+            E04-Goberman: Fridge Display
+        </title>
+
+        <link rel = "stylesheet" href = "fridge.css">
+    </head>
+
+    <body>
+
+        <button id = "handle" onClick = "openFridge()"></button>
+        <div id = "doorFace" style = "background-color: grey">
+            <div id = "display">
+                <div id = "displayOff">
+                    <div id = "clock">00:00:00</div>
+                    <button id = "onOffButton1" onClick = "displayOnOff()"><b>Display On</b></button>
+                </div>
+
+                <div id = "displayOn">
+                    <div id = "leftOnDiv">
+                        <div id = "clock2">00:00:00</div>
+                        <button class = "leftButtons" id = "homeButton" onClick = "goToHome()"><b>Home</b></button>
+                        <button class = "leftButtons" id = "shoppingListButton" onClick = "goToShoppingList()"><b>Shopping List</b></button>
+                        <button class = "leftButtons" id = "tvButton" onClick = "goToTV()"><b>TV</b></button>
+                        <button class = "leftButtons" id = "browserButton" onClick = "goToBrowser()"><b>Browse Online</b></button>
+                        <button id = "onOffButton2" onClick = "displayOnOff()"><b>Display Off</b></button>
+                    </div>
+                    <div id = "rightOnDiv">
+                        <div id = "startScreen">
+                            <h1 id = "greeting"><b>Hello! Welcome!</b></h1>
+                            <div class = "temp" id = "fridgeTemp">
+                                <img src = "https://pngimg.com/d/thermometer_PNG43.png" style = "width: 80px; height: 100px">
+                                <h1>36 &deg;F</h1>
+                                <p>Fridge Temperature</p>
+                            </div>
+
+                            <div class = "temp" id = "outsideTemp">
+                                <img src = "https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-15.png"
+                                    style = "width: 120px; height: 100px">
+                                <h1>50 &deg;F</h1>
+                                <p>Current Weather</p>
+                            </div>
+                        </div>
+                        <div id = "tv">
+                            <img src = "https://aptokash.github.io/SD330-2/06-tv.jpg"
+                                style = "width: 449px; margin-top: -50%; border-left: 2px solid black; border-right: 2px solid black">
+                                <br>
+                        </div>
+                        <div id = "browser" style = "margin-top: -20%">
+                            <img src = "https://aptokash.github.io/SD330-2/06-web.jpg"
+                                style = "width: 449px; margin-top: -50%; border-left: 2px solid black; border-right: 2px solid black">
+                        </div>
+
+                        <!--Moved shoppingList down here to help prevent tv and browser from moving downwards when new items are added to shoppingList-->
+                        <div id = "shoppingList" style = "margin-top: -105%">
+                            <h1><u>Shopping List</u></h1>
+                            <div id = "listCheckboxes" style = "width: 300px">
+                            </div>
+                            <div id = "addButtonAndInput" style = "margin-top: 5px">
+                                <button id = "addItemButton" onClick = "addItem()"><b>Add Item</b></button>
+                                <input type = "text" id = "addItemToList" style = "width: 200px; height: 40px; font-size: 20px; border-radius: 5px">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer style = "position: fixed; bottom: 5px; left: 2px; right: 2px">
+            <hr>
+            <small>&copy; C. Goberman - March 2, 2024</small>
+        </footer>
+
+        <script src = "fridge.js"></script>
+    </body>
+</html>

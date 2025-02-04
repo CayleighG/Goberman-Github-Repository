@@ -1,0 +1,214 @@
+[gd_scene load_steps=40 format=3 uid="uid://c8l3148amsc1c"]
+
+[ext_resource type="Texture2D" uid="uid://c11xurcf1b1ip" path="res://PNGs/Tutorial Animations/Aim/Aim 1.png" id="1_p2hr4"]
+[ext_resource type="Texture2D" uid="uid://cltj3h68arumj" path="res://PNGs/Tutorial Animations/Aim/Aim 2.png" id="2_03ruc"]
+[ext_resource type="Texture2D" uid="uid://c3scdgvdje0mc" path="res://PNGs/Tutorial Animations/Aim/Aim 3.png" id="3_l2by7"]
+[ext_resource type="Texture2D" uid="uid://b6t55enqx2tfs" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 1.png" id="4_7qr1r"]
+[ext_resource type="Texture2D" uid="uid://dpt3jtngbun0i" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 2.png" id="5_a0g52"]
+[ext_resource type="Texture2D" uid="uid://6wat1hcmtgj4" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 3.png" id="6_ywnr2"]
+[ext_resource type="Texture2D" uid="uid://bpys1r4ymaa3c" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 4.png" id="7_os6mg"]
+[ext_resource type="Texture2D" uid="uid://bw5aihfof014i" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 5.png" id="8_eyxr5"]
+[ext_resource type="Texture2D" uid="uid://c05s5n5gx0juf" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 6.png" id="9_n518s"]
+[ext_resource type="Texture2D" uid="uid://llwueqe6wenl" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 7.png" id="10_goj0y"]
+[ext_resource type="Texture2D" uid="uid://bawvpw5u3eh3e" path="res://PNGs/Tutorial Animations/Basic Grapple/Basic Grapple 8.png" id="11_ngc1h"]
+[ext_resource type="Texture2D" uid="uid://doh2n15m0ia42" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 1.png" id="12_ilxs8"]
+[ext_resource type="Texture2D" uid="uid://dbkibot662bok" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 2.png" id="13_iswhk"]
+[ext_resource type="Texture2D" uid="uid://dpllbfkiytwow" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 3.png" id="14_d3w4d"]
+[ext_resource type="Texture2D" uid="uid://16p3dna4dlx5" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 4.png" id="15_nucmt"]
+[ext_resource type="Texture2D" uid="uid://2svmtyle71ya" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 5.png" id="16_l4e3e"]
+[ext_resource type="Texture2D" uid="uid://csejubp3imshn" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 6.png" id="17_weq25"]
+[ext_resource type="Texture2D" uid="uid://cbplxkiqflajc" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 7.png" id="18_42k62"]
+[ext_resource type="Texture2D" uid="uid://qlueu01mveg" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 8.png" id="19_ve5pe"]
+[ext_resource type="Texture2D" uid="uid://cuquvygc6rkxl" path="res://PNGs/Tutorial Animations/Boulder Launch/Boulder Launch 9.png" id="20_gbgbc"]
+[ext_resource type="Texture2D" uid="uid://d1b37jegirt1u" path="res://PNGs/Tutorial Animations/Combat/Combat 1.png" id="21_2mvfo"]
+[ext_resource type="Texture2D" uid="uid://5o57gf56qpg8" path="res://PNGs/Tutorial Animations/Combat/Combat 2.png" id="22_i5b67"]
+[ext_resource type="Texture2D" uid="uid://bgsw7r6m81vuq" path="res://PNGs/Tutorial Animations/Combat/Combat 3.png" id="23_557v1"]
+[ext_resource type="Texture2D" uid="uid://b6ceoabmttde6" path="res://PNGs/Tutorial Animations/Combat/Combat 4.png" id="24_iwyo8"]
+[ext_resource type="Texture2D" uid="uid://dk2h1k3lf2fic" path="res://PNGs/Tutorial Animations/Combat/Combat 5.png" id="25_8nfre"]
+[ext_resource type="Texture2D" uid="uid://d0ps7gmamwlge" path="res://PNGs/Tutorial Animations/Combat/Combat 6.png" id="26_ekfyp"]
+[ext_resource type="Texture2D" uid="uid://dtfv5ussd6tiq" path="res://PNGs/Tutorial Animations/Combat/Combat 7.png" id="27_1uung"]
+[ext_resource type="Texture2D" uid="uid://c4ycfxgqk3mqx" path="res://PNGs/Tutorial Animations/Combat/Combat 8.png" id="28_5mewm"]
+[ext_resource type="Texture2D" uid="uid://clu1xr21w00wp" path="res://PNGs/Tutorial Animations/Combat/Combat 9.png" id="29_kujcq"]
+[ext_resource type="Texture2D" uid="uid://xwgqrinuaiif" path="res://PNGs/Tutorial Animations/Combat/Combat 10.png" id="30_pya3a"]
+[ext_resource type="Texture2D" uid="uid://cwq0qyequuj7a" path="res://PNGs/Tutorial Animations/Grapple Options/Grapple Options 1.png" id="31_hplai"]
+[ext_resource type="Texture2D" uid="uid://b6a4kre1fvxab" path="res://PNGs/Tutorial Animations/Grapple Options/Grapple Options 2.png" id="32_rf028"]
+[ext_resource type="Texture2D" uid="uid://b6md0drq51l12" path="res://PNGs/Tutorial Animations/Launch/Launch 1.png" id="33_2cabo"]
+[ext_resource type="Texture2D" uid="uid://dhf0fmade88fu" path="res://PNGs/Tutorial Animations/Launch/Launch 2.png" id="34_qksat"]
+[ext_resource type="Texture2D" uid="uid://1cfcthd4wi0d" path="res://PNGs/Tutorial Animations/Launch/Launch 3.png" id="35_hv1df"]
+[ext_resource type="Texture2D" uid="uid://dikhaidxhy0xj" path="res://PNGs/Tutorial Animations/Launch/Launch 4.png" id="36_eo8ud"]
+[ext_resource type="Texture2D" uid="uid://bgi5lk0eub8k8" path="res://PNGs/Tutorial Animations/Launch/Launch 5.png" id="37_u0gch"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jd054"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_p2hr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_03ruc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_l2by7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_03ruc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_l2by7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_03ruc")
+}],
+"loop": true,
+"name": &"aim",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_7qr1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_a0g52")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ywnr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_os6mg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eyxr5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_os6mg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eyxr5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_n518s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_goj0y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ngc1h")
+}],
+"loop": true,
+"name": &"basic_grapple",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_ilxs8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_iswhk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_d3w4d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_nucmt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_l4e3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_weq25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_42k62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ve5pe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_gbgbc")
+}],
+"loop": true,
+"name": &"boulder_launch",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("21_2mvfo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_i5b67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_557v1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_iwyo8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_8nfre")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_ekfyp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_1uung")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_5mewm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_kujcq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_pya3a")
+}],
+"loop": true,
+"name": &"combat",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_hplai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_rf028")
+}],
+"loop": true,
+"name": &"grapple_options",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_2cabo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_qksat")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_hv1df")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_eo8ud")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_u0gch")
+}],
+"loop": true,
+"name": &"launch",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_okc22"]
+size = Vector2(512, 255)
+
+[node name="TutorialWindow" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_jd054")
+animation = &"launch"
+frame_progress = 0.768699
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -0.5)
+shape = SubResource("RectangleShape2D_okc22")

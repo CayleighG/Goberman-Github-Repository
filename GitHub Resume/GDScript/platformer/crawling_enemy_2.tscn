@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://dl5kbn8xka76c"]
+
+[ext_resource type="Script" path="res://walking_enemy_2.gd" id="1_sigxj"]
+[ext_resource type="Texture2D" uid="uid://fps6vvo6lm3q" path="res://PNG/Enemies/enemySpikey_2.png" id="2_ugdib"]
+[ext_resource type="Texture2D" uid="uid://b7ok574a83wg8" path="res://PNG/Enemies/enemySpikey_1.png" id="3_3cm5i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6p0fe"]
+size = Vector2(32, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sflor"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ugdib")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3cm5i")
+}],
+"loop": true,
+"name": &"crawl",
+"speed": 5.0
+}]
+
+[node name="CrawlingEnemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_sigxj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_6p0fe")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_sflor")
+animation = &"crawl"
+
+[node name="FloorDetector" type="RayCast2D" parent="."]
+position = Vector2(19, 0)
+collision_mask = 2

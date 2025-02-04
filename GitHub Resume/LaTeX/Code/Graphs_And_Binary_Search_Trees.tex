@@ -1,0 +1,891 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{backgroundColor}{rgb}{0.95,0.95,0.92}
+\definecolor{darkGreen}{rgb}{0.1,0.60,0.32}
+\lstdefinestyle{mystyle}{
+    language=C++,
+    backgroundcolor=\color{backgroundColor}, 
+    commentstyle=\color{darkGreen},
+    keywordstyle=\color{magenta},
+    numbers=left,
+    xleftmargin=2em,
+    frame=single,
+    framexleftmargin=2em
+}
+
+\lstset{style=mystyle}
+
+\title{Algorithms Assignment 3 - Documentation}
+\author{Cayleigh Goberman}
+\date{11 November 2024}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+..............................................................................
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{A Brief Introduction}
+Hello once again! Welcome to the fourth installment in the "Algorithms Assignment Documentation" quartet (yes, we know that the title is "Algorithms Assignment 3"; like with most code, we started our documentation at index 0). Unlike Assignment 2, which borrowed code and explanations from Assignment 1, this documentation is fairly self-contained. That being said, we still have several topics to address! So without further ado, let us continue on to the first topic, undirected graphs! 
+
+\pagebreak
+\section{Undirected Graphs}
+An \underline{undirected graph} is a graph with no directing arrows, or, if it possesses arrows, has arrows pointing in both directions. In other words, if we have vertices 1 and 2, 1 -$>$ 2 and 2 -$>$ 1. In contrast, \underline{directed graphs} have arrows that point in a certain direction. If we use vertices 1 and 2, 1 -$>$ 2, but we cannot have 2 -$>$ 1. \\
+For this section, we will be using data from graphs1.txt, which describes multiple undirected graphs. For each graph, we will translate it into three different versions; a matrix, an adjacency list, and linked objects. Following the creation of our linked objects version, we will perform depth-first and breath-first traversal on the graph, then analyze the results. 
+
+\subsection{Matrices}
+Matrices represent a graph in the form of a table whose width and height are equal to the number of vertices in the graph. If there is an edge between two vertex points, then the corresponding index in the matrix will be set to "1". Otherwise, if there if no edge, the index will be "0". For example, an undirected graph has seven vertices and is thus 7x7 indexes in size. There is an edge between two and three, so we will set index (2,3) equal to 1. Since this is an undirected graph, we will need to do this for the opposite vertex as well. As such, index (3,2) will also be equal to 1. \\ \\
+\textbf{Setting Variables} \\
+Before we start creating the matrices, we need to set a few variables. These variables are declared at the top of our C++ document, before we start main(). \\
+
+\begin{lstlisting}
+// Configuration
+#include <iostream>
+// Gives us ifstream for reading the text file
+#include <fstream>
+// Vectors for the adjacency list and linked objects
+#include <vector>
+// Queues for the breadth-first traversals
+#include <queue>
+
+bool hasVertex0 = false;
+// Allows us to tell how many vertices there will be
+int size;
+/* This will act as the string we will detect in 
+various situations */
+std::string target;
+// Keeps track of how many lines have been read so far
+int lineNum = 0;
+// Allows us to store how long the file is
+int fileLength = 0;
+// The first vertex when adding edges
+std::string firstVertex = "";
+// The second vertex when adding edges
+std::string secondVertex = "";
+\end{lstlisting}
+The \#include lines allow us to use various functions of C++. "iostream" lets it process inputs and outputs, which we will need in order to print our results, and "fstream" allows us to read text files. While we are here, we might as well add \#include $<$vector$>$ and \#include $<$queue$>$, which will be employed later on. \\
+Most of the variables are self-explanatory. "hasVertex0" detect whether or not the graph starts at vertex 0 or 1. If it starts at 1, we will need to increase the size of our matrix by 1 so as to compensate for the numeric positions of the vertices. For example, if we have a graph with vertices 1-64 and we initialize the matrix with size 64, the indexes will actually be numbered 0-63. As such, if we try to put an edge at "64", the program will throw an error. \\
+"int size" is an integer value where we will store how many vertices are in the graph. \\
+"std::string target" is a string value where we will store each line of the file one-by-one as we iterate through it. \\
+"int lineNum" is an integer value that allows us to keep track of which line we are currently at in the file. \\
+"int fileLength" stores how long the file is for future reference. \\
+Finall, the strings "firstVertex" and "secondVertex" will store the indicated vertices for when we start to add edges to our matrix. \\
+
+\textbf{Opening the File} \\
+We have our variables set up, but we still need to access graphs1.txt.
+
+\begin{lstlisting}
+// Allows us to open and read data from the file
+std::ifstream file;
+file.open("graphs1.txt");
+
+// Failsafe in case the user does not have the file
+if (file.fail()) {
+    std::cout << "File failed to open" << std::endl;
+    /* Returning 1 indicates to the program that 
+    something has gone wrong */
+    return 1;
+}
+
+/* This retrieves the file's length and is more 
+reliable than !file.eof(). As long as there is another 
+line to read, it will continue */
+while (std::getline(file, target)) {
+    fileLength++;
+}
+
+/* Need to get rid of fail flags before we can go back 
+to the beginning of the file */
+file.clear();
+// Moves back to the beginning of the file
+file.seekg(0, std::ios::beg);
+\end{lstlisting}
+To begin, we use ifstream to open our desired file, "graphs1.txt". We'll include a failsafe in case the program cannot find the file. In this scenario, rather than crashing, the program will print "File failed to open" and end before anything really bad can occur. \\
+Once the file has successfully opened, we need to calculate how many lines are present in it. This variable will allow us to set an upper boundary when using "for" loops to read through each line in the file. We can find this value by incrementing fileLength by one for every line read in the file. \\
+Before we move on to the matrices themselves, we need to indicate that we want to read from the beginning of the file. We are currently at the end of the file after calculating fileLength and have tripped a flag that states that there are no more lines to read. We need to reset this fail flag, then return to line 0 and read from there. \\
+
+\textbf{Creating the Matrices} \\
+Now that we have sufficient setup, we can start making the matrices themselves! Most of the code is nested underneath two loops:
+
+\begin{lstlisting}
+while (std::getline(file, target)) {
+   if (target.find("new graph") != std::string::npos){
+      // Our matrix code goes here
+   }
+   lineNum++;
+}
+\end{lstlisting}
+As long as there are lines remaining in the file, the "while" loop will continue. However, it will not start a new matrix until it detects the line "new graph". Before we restart the "while" loop, we need to increment lineNum by 1 to assist in keeping track of how far into the file we are, as we move on to the next line when the "while" loop restarts. \\
+With the creation of these key loops, we can move on to the code contained within them. \pagebreak
+
+\begin{lstlisting}
+size = 0;
+
+vertexNum(file);
+if (hasVertex0 == false){
+    size++;
+}
+
+// Creating the matrix
+int matrix[size][size];
+
+// Initialize all elements of the matrix to 0
+for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+        matrix[i][j] = 0;
+    }
+}
+\end{lstlisting}
+With the detection of the line "new graph", we are clear to start a new matrix. As such, we need to make sure that the size of the matrix is initially set to zero. We can then run the function "vertexNum" to determine both the number of vertices in the matrix (size) and whether or not it starts at vertex 0 (hasVertex0). This function will be discussed in the next section of code. For now, since we now know the number of vertices, we can create the matrix with "size" rows and "size" columns. We then set all elements of the matrix to 0, as it currently has no processed edges. \\
+
+\underline{\textit{Wait, How Did We Find The Number of Vertices?}} \\ \\
+We found the number of vertices by passing the file to vertexNum(), a function declared outside of our main() function.
+\begin{lstlisting}
+void vertexNum (std::ifstream& file){
+    /* This "for" loop allows us to see how many 
+    vertices are in this matrix */
+    for (int i = lineNum; i < fileLength; i++){
+        /* Stores the current position before moving 
+        on to the next */
+        std::streampos previousPos = file.tellg();
+
+        std::getline(file, target);
+        lineNum++;
+                
+        if (target.find("add vertex") != 
+            std::string::npos) {
+            /* Only one of the graphs in the example 
+            has vertex 0. The rest start at vertex 1*/
+            /* Since matrix indexes start at (0,0), 
+            this can cause problems if we assume that 
+            we start at 1 */
+            if (target[11] == '0'){
+                hasVertex0 = true;
+            }
+            size++;
+        } else{
+            /* If the current position does not have 
+            "add vertex", we will revert to the 
+            previous line, or oldPos */
+            file.seekg(previousPos, std::ios::beg);
+            lineNum--;
+            break;
+        }
+    }
+}
+\end{lstlisting}
+We start at the current line, or the current value of lineNum, and continue until we either break the loop or reach the end of the file (fileLength). We then store our current position in the variable previousPosition for when we reach the end of the lines that declare new vertices. With that out of the way, we can get the line after "new graph" and add one to lineNum. This should put us at the first of the lines that add the vertices. \\
+Each line that adds a new vertex starts with the words "add vertex". If the current line contains "add vertex", we will move to index 11 and check the character there. The lines that add vertices always begin with "add vertex ", which is equal to 11 characters. As such, the identifier for the first vertex will begin at the twelfth character, or index 11. If the character at index 11 is equal to zero, then the graph contains vertex 0, and hasVertex0 must be set equal to true. Since we have added a new vertex, we will increase "size" by one. \\
+However, if the current line does not contain "add vertex", then we have reached the end of the lines that create new vertices. As such, we will revert to the previous line, subtract one from lineNum, and break the "for" loop. This allows us to start adding the edges after the initial creation of the matrix. \\
+
+\underline{\textit{Back to Main()}} \\ \\
+We have successfully created our matrix! Now all we have to do is populate it with the edges. 
+\begin{lstlisting}
+for (int i = lineNum; i < fileLength; i++){
+    if (!file.eof()){
+        /* Stores the current position before moving 
+        on to the next */
+        std::streampos previousPos = file.tellg();
+
+        std::getline(file, target);
+        lineNum++;
+
+        if (target.find("add edge") 
+            != std::string::npos){
+            findVertexOneAndTwo();
+            /* Since we stored firstVertex and 
+            secondVertex as strings, we need to use 
+            stoi() to convert them to integers */
+            /* Marks the edge between firstVertex and 
+            secondVertex as 1 */
+            matrix[std::stoi(firstVertex)]
+                [std::stoi(secondVertex)] = 1;
+            /* Graph is undirected, so we need to do 
+            it for the opposite vertex as well */
+            matrix[std::stoi(secondVertex)]
+                [std::stoi(firstVertex)] = 1;
+        } else {
+            /* If the current position does not have 
+            "add vertex", we will revert to the 
+            previous line, or oldPos */
+            file.seekg(previousPos, std::ios::beg);
+            lineNum--;
+            std::cout << std::endl;
+            break;
+        }
+    } else {
+        // Occurs when we reach the end of the file
+        break;
+    }
+}
+\end{lstlisting}
+We begin our edges loop on the current line number, which varies depending on which graph we are converting to a matrix. We also clarify that we want to continue the loop only while the file has not ended. This mainly acts as an extra failsafe in case fileLength was calculated wrong and is greater than the number of lines in the file. Once we properly begin, we take a similar approach as the one in vertexNum() by recording the current line as previousPos, then getting the next line and incrementing lineNum by 1. \\
+target.find("add edge") ensures that we will continue to add edges until the file lines stop telling us to. First, we will locate the first and second vertex specified in the line, then we will change that matrix index to be equal to 1. For example, if there is an edge between vertices 3 and 6, we will set (3,6) equal to 1 to indicate that there is an edge present there. Since these graphs are undirected, we will have to do the same for the opposite of the index. In relation to our previous example, this means that (6,3) will also be set to 1. \\
+Once the line no longer states "add edge", we revert to the previous position, subtract one from lineNum, and break out of the edges loop. This indicates that we have finished adding the edges from this graph to our matrix; therefore, we either need to start on a new matrix for another graph or end the process at the end of the file. \\
+
+\underline{\textit{I Have the Matrix! How Do I Print It?}} \\ \\
+Congratulations! You have successfully created a matrix for a graph described in "graphs1.txt". Our code should continue through the entire file and create matrices for all of the other graphs as well. However, before we do that, we want to actually see what we created.
+
+\begin{lstlisting}
+// Prints the matrix
+std::cout << "Matrix " << matrixNum << std::endl;
+for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+        std::cout << matrix[i][j] << " ";
+    }
+    std::cout << std::endl;
+}
+std::cout << std::endl;
+
+/* Mainly an organizational variable to help keep 
+track of which graph's matrix is being printed. It is 
+printed above the matrix. */
+matrixNum++;
+\end{lstlisting}
+This handy little "for" loop is located at the very end of the "target.find('new graph')" "if" statement. It runs through every vertex and all its possible pairs, then prints the values present at that index value in the matrix. In other words, i represents the rows, and j represents the columns For example, the i loop might be at index 3. The j loop ensures that it will print out the values in (3,0), (3,1), (3,2)... (3, \{max value in size\}). Once we reach the end of that row, we use "std::cout $<<$ std::endl" to start a new line for the next row. The entire matrix will be printed out once the i loop is complete.
+
+\pagebreak
+
+\subsection{Adjacency Lists}
+\underline{Adjacency lists} allow us to represent a graph in the form of linked lists. Each list within a vertex's adjacency list describes the other vertices connected to the vertex via edges (we can also refer to these connected vertices as \underline{neighbors}). Now that we have translated our graphs into matrices, we can do the same with adjacency lists. However, before we start the adjacency lists code, we need to reset some variables and move the file reader back to the beginning of the file (see "Matrices", p. 5, for a more detailed explanation of file.clear and file.seekg). \\
+
+\begin{lstlisting}
+file.clear();
+file.seekg(0, std::ios::beg);
+
+lineNum = 0;
+firstVertex = "";
+secondVertex = "";
+\end{lstlisting}
+
+Our variables are ready! Now we can start our adjacency list code.
+
+\begin{lstlisting}
+while (std::getline(file, target)) {
+   hasVertex0 = false;
+   if (target.find("new graph") != std::string::npos){
+      // Our adjacency lists code goes here
+   }
+}
+\end{lstlisting}
+Similarly to the matrices code, we will be adding the code underneath "while (std::getline(file, target))" and "if (target.find("new graph") != std::string::npos)" (see "Matrices", p. 5, for a more detailed explanation of these two loops). However, unlike in the matrices section, we need to reset our hasVertex0 boolean before starting the "if" loop, just in case it was set to "true" before we try to make a new graph.
+
+\begin{lstlisting}
+size = 0;
+
+vertexNum(file);
+if (hasVertex0 == false){
+    size++;
+}
+
+// Creating the adjacency list
+std::vector<std::vector<int>> adjacencyList(size);
+\end{lstlisting}
+We once again have to get the number of vertices in the graph and determine whether or not hasVertex0 is false. As such, we invoke the vertexNum() function again. For a more detailed explanation of vertexNum(), see "Matrices", p. 6-7. \\
+Once we have "size" and "hasVertex0", we can create an adjacency list of size "size". We will be using a vector of integers to represent the vertex numbers that will be inserted into the adjacency lists. When using C++, remember to include "\#include $<$vector$>$" at the beginning of the code document. \\
+
+\begin{lstlisting}
+// Adding edges
+for (int i = lineNum; i < fileLength; i++){
+    if (!file.eof()){
+        /* Stores the current position before moving 
+        on to the next */
+        std::streampos previousPos = file.tellg();
+
+        std::getline(file, target);
+        lineNum++;
+
+        if (target.find("add edge") 
+            != std::string::npos){
+            findVertexOneAndTwo();
+
+            adjacencyList[std::stoi(firstVertex)]
+                .push_back(std::stoi(secondVertex));
+            adjacencyList[std::stoi(secondVertex)]
+                .push_back(std::stoi(firstVertex));
+
+        } else {
+            /* If the current position does not have 
+            "add vertex", we will revert to the 
+            previous line, or oldPos */
+            file.seekg(previousPos, std::ios::beg);
+            lineNum--;
+            std::cout << std::endl;
+            break;
+        }
+    } else {
+        // Occurs when we reach the end of the file
+        break;
+    }
+}
+\end{lstlisting}
+The general outline that occurs when we write our "add edges" code is very similar to that of the "add edges" code in the matrices ("Matrices", p. 7-9). We start with a "for" loop and continue into an "if" statement that detects when we have reached the end of the file. After storing our current position, we move on to the next line in the document. As long as the line includes "add edge", we will use findVertexOneAndTwo() ("Matrices", p.6-7) to deduce our first and second vertices in the edge. \\
+Once we have the vertices, we use "push\_back()" to insert the second vertex at the end of the adjacency list for the first vertex. In other words, if our first vertex is 5 and the second vertex is 9, vertex 9 will be inserted at the end of the list corresponding to vertex 5. Since these are undirected graphs, we must do the same for the opposite vertex, or insert vertex 5 at the end of the list corresponding to vertex 9. \\
+Eventually, the file lines will no longer tell us to "add edge". When this occurs, we reset back to the previous position and break out of the "for" loop. We will also break out of the loop if we reach the end of the file. \\ \\
+\underline{\textit{I Have the Adjacency Lists! How Do I Print Them?}} \\ \\
+With the conclusion of the "for" loop, we have successfully created adjacency lists for every graph in the text file! Now all we have to do is print them before we conclude the "while (std::getline(file, target))" and "if (target.find("new graph") != std::string::npos)" loops.
+
+\begin{lstlisting}
+// Printing the adjacency list
+std::cout << "\nAdjacency List " << listNum 
+    << std::endl;
+for (int i = 0; i < adjacencyList.size(); ++i) {
+    // Vertex number
+    std::cout << i << ") ";
+    // Print each adjacent vertex
+    for (int j = 0; j < adjacencyList[i].size(); ++j){
+        std::cout << adjacencyList[i][j] << " -> ";
+    }
+    // End of the line
+    std::cout << "nullptr" << std::endl;
+}
+
+listNum++;
+\end{lstlisting}
+This "for" loop is fairly simple; for every adjacency list (as indicated at the top with the help of the "listNum" variable), we print the vertex number, "i", then iterate through and print every item in the list at "i". The result should exhibit the base vertex with arrows pointing to the vertices that it shares an edge with.
+
+\pagebreak
+
+\subsection{Linked Objects}
+\underline{Linked objects} are similar to adjacency lists in that they contain a pointer to another object. However, each object also contains data in addition to the pointer. In this situation, our linked objects can be found at the top of the document and look like this:
+
+\begin{lstlisting}
+struct vertex {
+    int id;
+    bool processed = false;
+    vertex* neighbors;
+};
+\end{lstlisting}
+This structure, representing a vertex, contains the vertex's ID, a boolean value, and the pointer "neighbors". The boolean "processed" will assist us when we run the linked objects through depth-first and breadth-first traversals. \\
+Once again, before we start the liked objects code, we need to reset variables...
+\begin{lstlisting}
+file.clear();
+file.seekg(0, std::ios::beg);
+
+lineNum = 0;
+firstVertex = "";
+secondVertex = "";
+\end{lstlisting}
+
+... start our "while" and "if" loop, setting "hasVertex0" to false...
+\begin{lstlisting}
+while (std::getline(file, target)) {
+   hasVertex0 = false;
+   if (target.find("new graph") != std::string::npos){
+      // Our linked objects code goes here
+   }
+}
+\end{lstlisting}
+
+... and find the number of vertices.
+\begin{lstlisting}
+size = 0;
+
+vertexNum(file);
+if (hasVertex0 == false){
+    size++;
+}
+\end{lstlisting}
+
+Now we can create "linkedObjects" as a "vertex" structure of size "size". For a more detailed explanation of the above code, see "Matrices".
+\begin{lstlisting}
+std::vector<vertex*> linkedObjects(size);
+\end{lstlisting} 
+\pagebreak
+With the creation of linkedObjects, we can start adding edges to each vertex. If you skimmed the previous sections on matrices and adjacency lists, most of this should look familiar:
+\begin{lstlisting}
+for (int i = lineNum; i < fileLength; i++){
+    if (!file.eof()){
+        /* Stores the current position before moving 
+        on to the next */
+        std::streampos previousPos = file.tellg();
+
+        std::getline(file, target);
+        lineNum++;
+
+        if (target.find("add edge") 
+            != std::string::npos){
+            findVertexOneAndTwo();
+
+            /* We're going to be typing the numerical 
+            value of firstVertex and secondVertex a 
+            lot, so I'm just going to declare them as 
+            variables here rather than typing out 
+            "std::stoi" each time */
+            int vertex1 = std::stoi(firstVertex);
+            int vertex2 = std::stoi(secondVertex);
+
+            // First vertex
+            vertex* lineToBeAppended = new vertex();
+            lineToBeAppended->id = vertex2;
+            lineToBeAppended->neighbors = nullptr;
+            if (linkedObjects[vertex1] == NULL){
+                linkedObjects[vertex1] = 
+                    lineToBeAppended;
+            }
+            else {
+                vertex* pointer = 
+                    linkedObjects[vertex1];
+                while (pointer->neighbors != nullptr){
+                    pointer = pointer->neighbors;
+                }
+                pointer->neighbors = lineToBeAppended;
+            }
+
+            // Second vertex
+            // Making a new vertex* just to be safe
+            vertex* lineToBeAppended2 = new vertex();
+            lineToBeAppended2->id = vertex1;
+            lineToBeAppended2->neighbors = nullptr;
+            if (linkedObjects[vertex2] == NULL){
+                linkedObjects[vertex2] = 
+                    lineToBeAppended2;
+            }
+            else {
+                vertex* pointer = 
+                    linkedObjects[vertex2];
+                while (pointer->neighbors != nullptr){
+                    pointer = pointer->neighbors;
+                }
+                pointer->neighbors = lineToBeAppended2;
+            }
+                        
+        } else {
+            /* If the current position does not have 
+            "add vertex", we will revert to the 
+            previous line, or oldPos */
+            file.seekg(previousPos, std::ios::beg);
+            lineNum--;
+            std::cout << std::endl;
+            break;
+        }
+    } else {
+        // Occurs when we reach the end of the file
+        break;
+    }
+}
+\end{lstlisting}
+You can find the explanation for most of this code in "Matrices". The sections that are of most interest to us at the moment are at lines 14-55. After finding the first and second vertex, we translate the string values into the integers vertex1 and vertex2. Following this, we can add the second vertex to the object associated with the first. For example, if the first vertex is 1 and the second is 2, we will add "2" to the linked object at index 1. \\
+First, we set the vertex* lineToBeAppended to be equal to the values we want. It should store the ID of vertex2, but since it will be added to the end of the linked object, its neighbor should be "nullptr". If we refer back to the "vertex" structure, we can see that "processed" is automatically set to false, so we do not need to assign it here. \\
+If the linked object at index vertex1 is equal to NULL, then there is no object in that position yet. As such, we can just set linkedObjects[vertex1] equal to lineToBeAppended. However, if there is already another vertex at linkedObjects[vertex1], we need to find the end of the list of linked objects. We can do this by iterating through the list until we find where "neighbor" is equal to "nullptr". Once we find "nullptr", we can set that neighbor to be equal to lineToBeAppended. \\
+Since the text file describes undirected graphs, we will need to repeat the entire "add edge" process with the opposite vertices. In the spirit of our earlier example, we are now adding vertex 1 to the linked object at index 2. It is the same process, but with vertex1 and vertex2 swapped. Following this, we can either continue on to the next edge, or end the loops (see "Matrices" for a more in-depth explanation of why this occurs). \\
+With the completion of the edges code, the graph is now represented in a series of linked objects! However, rather than printing it, as we did with the matrices and adjacency lists, we will do something slightly different; we will run it through a depth-first and a breadth-first traversal. 
+
+\pagebreak
+
+\subsection{Depth-First Traversal}
+A \underline{depth-first traversal} of a graph occurs when the traversal goes \textit{deep} before it goes \textit{wide}. In other words, we search the graph bottom-to-top, with each child node processed from left to right. \\
+Before calling out depthFirstSearch() function, we need to set up a "for" loop that loops through every vertex in the linked objects. This loop is positioned just underneath the loop where we add edges to the linked objects. 
+\begin{lstlisting}
+// Loop through all vertices
+std::cout << "Linked Object " << linkedObjNum << ": 
+    Depth-First Traversal" << std::endl;
+for (int i = 0; i < size; i++){
+    if(linkedObjects[i] != NULL){
+        if (linkedObjects[i]->processed == false){
+            /* If vertex i has not been visited, 
+            perform depthFirstSearch on it */
+            depthFirstSearch(linkedObjects, i);
+        }
+    }
+}
+\end{lstlisting}
+This is where the "processed" variable in the "vertex" structure comes in handy. We will use it to indicate whether or not we have visited that specific vertex yet. If the current vertex if not null, and if its "processed" variable is equal to false, then we will start depthFirstSearch() with arguments vertex* linkedObjects and int i, or the current vertex. It is important to check through every vertex, as some of them might not be connected to an edge. If we rely exclusively on depthFirstSearch(), then these disconnected vertices would be missed when printing out the result.
+
+\begin{lstlisting}
+void depthFirstSearch(
+    std::vector<vertex*>& linkedObjects, int v){
+    if (linkedObjects[v]->processed == false){
+        std::cout << v << " ";
+        linkedObjects[v]->processed = true;
+    }
+
+    /* Creating a new vertex* for reference so that we 
+    are not messing with linkedObjects too much */
+    vertex* pointer = linkedObjects[v];
+    int neighborCount = 0;
+    while (pointer->neighbors != nullptr){
+        neighborCount++;
+        pointer = pointer->neighbors;
+    }
+
+   pointer = linkedObjects[v];
+    for (int i = 0; i < neighborCount; i++) {
+        int id = pointer->id;
+        if (linkedObjects[id]->processed == false){
+            // Recursive function
+            depthFirstSearch(linkedObjects, id);
+        } 
+        else if (pointer->neighbors != nullptr){
+            pointer = pointer->neighbors;
+        }
+    }
+}
+\end{lstlisting}
+To begin, if the current vector's "processed" variable (linkedObjects[v]-\>processed) is equal to false, then we need to indicate that we have visited it. As such, we will print the vertex and set its "processed" variable to true. This will prevent us from revisiting it now that we have processed it once. \\
+The "pointer" section was created in order to set up for the following "for" loop. The "for" loop will need to loop through every neighbor present in the linked object at the vertex. As such, we need to know the number of neighbors present. "pointer" is set equal to the current vertex, then loops through each neighbor until the next "neighbor" variable is a "nullptr". With every loop, the integer neighborCount is incremented by one. By the time the "while" loop terminates, we will know the number of neighbors present at this vertex point. \\
+Upon starting the "for" loop, we set "pointer" back to linkedObjects[v] and create a variable to store the value of the pointer's ID. For every neighbor, we will check the corresponding vertex point. If that vertex point's "processed" variable is equal to false, we will recursively call depthFirstSearch() on the vertex point, whereupon the entire function will repeat for that specific vertex. However, if the vertex has already been processed, we continue on to the next vertex listed in the neighbors. \\
+
+\underline{\textit{Results}} \\
+With the completion of both the "for" loop and depthFirstSearch(), we will have printed out the results for the depth-first traversal of the graph. The asymptotic running time of this traversal should be roughly equal to... 
+\begin{center}
+    O($|$V$|$ + $|$E$|$)
+\end{center}
+Where V is equal to the number of vertices and E is equal to the number of edges. Depth-first traversal makes use of the edges in order to trace where to go next; if a vertex is not connected to the rest of the graph via an edge, it will not be found by the depth-first traversal. As such, we must account for both the number of vertices as well as the number of edges, which must be processed to find adjoining vertices. \\
+For example, if a graph has 7 vertices and 11 edges, then its asymptotic running time should be O($|$V$|$ + $|$E$|$) = O(7 + 11) = 18
+
+\pagebreak
+
+\subsection{Breadth-First Traversal}
+A \underline{breadth-first traversal} of a graph occurs when the traversal goes \textit{wide} before it goes \textit{deep}. In other words, we will take every node on a certain level, normally from left to right, before we move down to the next level.
+\begin{lstlisting}
+/* Resetting "processed" to false for each vertex so 
+we can perform breadth-first search */
+for (int i = 0; i < size; i++) {
+    if(linkedObjects[i] != NULL){
+        if (linkedObjects[i]->processed == true) {
+            linkedObjects[i]->processed = false;
+        }
+    }
+}
+std::cout << std::endl;
+\end{lstlisting}
+Before we perform a breadth-first traversal on our linked objects, we must first account for the fact that we just did a depth-first traversal. This means that every "processed" variable is currently set to true. In order to effectively perform a breadth-first search, we must reset every "processed" variable to false. 
+
+\begin{lstlisting}
+// Loop through all vertices
+std::cout << "Linked Object " << linkedObjNum << 
+    ": Breadth-First Traversal" << std::endl;
+for (int i = 0; i < size; i++){
+    if(linkedObjects[i] != NULL){
+        if (linkedObjects[i]->processed == false){
+            /* If vertex i has not been visited, 
+            perform depthFirstSearch on it */
+            breadthFirstSearch(linkedObjects, i);
+        }
+    }
+}
+std::cout << std::endl;
+\end{lstlisting}
+Similarly to depth-first traversal, we must check every vertex in the linked objects to ensure that we do not accidentally miss a vertex. The "for" loop will terminate once every vertex has been checked to ascertain whether or not its "processed" variable is set to true. \\
+Before we move on to breadthFirstSearch(), make sure to double check that queues have been included at the top of the code document. We will need to make use of queues in order to effectively employ the breadth-first search.
+
+\pagebreak
+
+\begin{lstlisting}
+#include <queue>
+\end{lstlisting}
+\begin{lstlisting}
+void breadthFirstSearch(
+    std::vector<vertex*>& linkedObjects, int v){
+    // Queue
+    std::queue<int> searchQueue;
+
+    // Change vertex->processed to true and enqueue it
+    linkedObjects[v]->processed = true;
+    searchQueue.push(v);
+
+    // Read through the queue until it is empty
+    while(!searchQueue.empty()){
+        // Dequeue vertex and print it
+        v = searchQueue.front();
+        std::cout << v << " ";
+        searchQueue.pop();
+
+        vertex* pointer = linkedObjects[v];
+        while (pointer != NULL){
+            int id = pointer->id;
+            if (linkedObjects[id]->processed== false){
+                // Recursive function
+                linkedObjects[id]->processed = true;
+                searchQueue.push(id);
+                if (pointer->neighbors == nullptr){
+                    break;
+                }
+            } 
+            /* Need to add this or it will be caught 
+            in a forever loop when it finds a 
+            linkedObjects[id]->processed == true */
+            if (linkedObjects[id]->processed == true){
+                pointer = pointer->neighbors;
+            }
+            else if (pointer->neighbors != nullptr){
+                pointer = pointer->neighbors;
+            }
+        }
+    }
+}
+\end{lstlisting}
+Upon beginning the function, we need to create a queue where we will store our processed vertices. Since we are starting at either vertex 0 or 1 (depending on whether or not vertex 0 is equal to NULL), we will set that vertex's "processed" variable equal to true, then add the vertex to the queue. \\
+Following this, we enter a "while" loop that continues until the queue is empty. Inside the loop, we set "v" equal to the value at the front of the queue. After setting this value, we dequeue the front of the queue, removing "v" from it. We then set a vertex* "pointer" equal to the vertex at index "v" in linkedObjects. This sets us up for the next "while" loop. \\
+While pointer is not NULL, we will run the code within the "while" loop. If pointer is ever equal to NULL, then we have reached the end of the list of neighbors and cannot continue. While we are in the loop, we will set an integer "id" equal to the id variable of the pointer. We can then check if the "processed" variable at linkedObjects[id] is equal to false. If it is false, instead of recursively calling the function like we would in depth-first traversal, we will set "processed" to true and push the vertex id to the queue. If we have reached the end of the neighbors, we will break out of the function. However, if linkedObjects[id]-\>processed is equal to true, or if the next neighbor is not equal to "nullptr", we will set pointer equal to pointer-\>neighbors. \\
+The queue allows us to keep track of who is in a specific "level" of the graph. Vertices on a lower level will be pushed to the queue later than those on the same level. As such, when we pop the list, we process "wide" across the graph rather than "deep". \\
+
+\underline{\textit{Results}} \\
+With the completion of the "if" loop and breadthFirstSearch(), we will have successfully completed a breadth-first traversal across the graph. Like depth-first search, the asymptotic running time of breadth-first search is...
+\begin{center}
+    O($|$V$|$ + $|$E$|$)
+\end{center}
+Where V is equal to the number of vertices and E is equal to the number of edges. Each vertex is reached by tracing an edge to that vertex from the connecting vertex; as such, we will traverse each vertex and each edge once. For example, if a graph has 8 vertices and 28 edges, then its asymptotic running time is equal to O($|$V$|$ + $|$E$|$) = O(8 + 28) = 36
+
+
+\pagebreak
+\section{Binary Search Tree}
+A \underline{binary search tree} is a tree where each node has 0, 1, or 2 children. The nodes that are to the left of the parent node are less than said parent node, and those to the right are greater. \\
+In this section, we will create a binary search tree, but in order to do so, we must switch from "graphs1.txt" to "magicitems.txt". We can sort the various items in "magicitems.txt" alphabetically into a binary search tree. 
+\subsection{Inserting into the Tree}
+Before we can insert the items into the binary search tree, we must first open "magicitems.txt" and create the binary search tree.
+
+\begin{lstlisting}
+/* Don't forget to close "graphs1.txt" when done with 
+the undirected graphs */
+file.close();
+
+
+// Part 2: Binary Search Tree
+file.open("magicitems.txt");
+
+// Failsafe in case the user does not have the file
+if (file.fail()) {
+    std::cout << "File failed to open" << std::endl;
+    /* Returning 1 indicates to the program that 
+    something has gone wrong */
+    return 1;
+}
+\end{lstlisting}
+Before opening "magicitems.txt", make sure that "graphs1.txt" has been closed, as we are finished with our work on the undirected graphs. Once that file has been closed, you can open a new one, "magicitems.txt". Just to be safe, we will include an "if" statement to detect if the file was found. If the file could not be located, the program informs the user of the problem, then ends instead of crashing. \\
+Next, we have to create a binary search tree structure at the top of the code document.
+
+\begin{lstlisting}
+// Binary Search Tree
+struct BST {
+    std::string item;
+    BST* left;
+    BST* right;
+};
+\end{lstlisting}
+\pagebreak
+This structure is fairly straightforward; every node on the binary search tree has an ID ("item"), a left pointer ("left"), and a right pointer ("right"). We will use "left" and "right" to point to the child nodes underneath the parent node. \\
+With the creation of the BST structure, we can return to our main() function and declare our binary search tree.
+\begin{lstlisting}
+// Create binary search tree
+BST* binarySearchTree = new BST();
+binarySearchTree = nullptr;
+\end{lstlisting}
+binarySearchTree currently contains no items. As such, we will set it equal to "nullptr" for now. 
+
+\begin{lstlisting}
+// Inserting Items into the BST
+/* Gets the string at the specific line and stores it 
+in "target" */
+while (std::getline(file, target)) {
+
+    /* The loop turns all the letters to lowercase. 
+    If this is not done, the items with a lowercase 
+    first letter will be automatically placed at the 
+    end of the tree instead of sorted into their 
+    proper alphabetical order. */
+    for (int i = 0; i < target.length(); i++) {
+        if (target[i] != ' ') {
+            // Converts characters to lowercase
+            target[i] = tolower(target[i]);
+        }
+    }
+
+    std::cout << target << ": ";
+    binarySearchTree = 
+        insertToBST(binarySearchTree, target);
+    std::cout << std::endl;
+}
+\end{lstlisting}
+Now that we have our binarySearchTree, we can start inserting the items from "magicitems.txt". To begin, we will create a "while" loop that runs through every line in the file. The string at each line will be stored in the "target" string we declared at the beginning of the code document (see "Matrices", p. 3-4). Following this, we will turn each character in "target" to its lowercase equivalent. This is necessary in order to properly alphabetize the items. In C++, capitalized letters are considered to be "greater" than lowercase letters due to the fact that their ASCII values are greater. As such, if we do not turn all the characters to lowercase, the binary search tree will not be properly sorted. For example, "Wartexx" would be considered "greater" than "club" even though C comes before W in the alphabet. \\
+Once we have the lowercase version of the string, we can send it to our insertToBST() function, along with binarySearchTree. Once the function returns a value, we will set binarySearchTree equal to that value. \\
+With the conclusion of our "while" loop, our binarySearchTree should be complete! However, before moving on, we need to take a look at what actually happens in insertToBST().
+
+\begin{lstlisting}
+BST* insertToBST(BST* binarySearchTree, 
+    std::string item) {
+    // If the tree is empty, add a new node
+    if (binarySearchTree == nullptr) {
+        BST* newNode = new BST();
+        newNode->item = item;
+        newNode->left = newNode->right = nullptr;
+        return newNode;
+    }
+
+    // Otherwise, recur down the tree
+    if (item < binarySearchTree->item) {
+        std::cout << "L, ";
+        binarySearchTree->left = 
+            insertToBST(binarySearchTree->left,item);
+    }
+    else if (item > binarySearchTree->item) {
+        std::cout << "R, ";
+        binarySearchTree->right = 
+            insertToBST(binarySearchTree->right,item);
+    }
+
+    return binarySearchTree;
+}
+\end{lstlisting}
+Unlike most of the functions discussed in this document, insertToBST() has to be of type "BST*" due to the fact that we are returning binarySearchTree, which is a "BST*" variable. Once we begin the function, we first detect if binarySearchTree is empty, or equal to "nullptr". If it is, we create a new instance of BST* called newNode. newNode's item is set to the current item, and its left and right variables are set to "nullptr" for now. \\
+However, if there are already items in binarySearchTree, we move on to the next section of insertToBST(). If the current item is less than the item in the parent node, then the current item moves down the tree to the left. We then recursively call insertToBST() again, but this time with the BST* argument represented by the list underneath the current parent node. \\
+On the other hand, if the current item is greater than the item in the parent node, the current item will move down the tree to the right. Like with items moving to the left, we will recursively call insertToBST() with the BST* argument represented by the list underneath the current parent node. \\
+These two "if" statements will continue until there is no more places for the current item to move to. Once this occurs, we return binarySearchTree, with the current item fit snugly into its proper place in the tree. Each item will have its path printed in the form of "L, R, L, R, R...." in order to indicate where it was placed in the tree. 
+
+\pagebreak
+
+\subsection{In-Order Traversal}
+At this point, we have succesfully added all items in "magicitem.txt" to binarySearchTree. However, we cannot \textit{see} our new binary search tree. In order to print out binarySearchTree, we can use an in-order traversal. 
+\begin{lstlisting}
+std::cout << "\nIn-Order Traversal: " << std::endl;
+inOrderTraversal(binarySearchTree);
+
+/* We can close the file now that we are finished with 
+binarySearchTree */
+file.close();
+\end{lstlisting}
+\begin{lstlisting}
+void inOrderTraversal(BST* binarySearchTree){
+    if (binarySearchTree != nullptr){
+        /* Use recursive function on the left side of 
+        the tree */
+        inOrderTraversal(binarySearchTree->left);
+        // Print the leftmost item
+        std::cout << binarySearchTree->item 
+            << std::endl;
+        // Go to the right of the tree now
+        inOrderTraversal(binarySearchTree->right);
+    }
+}
+\end{lstlisting}
+We begin by calling the inOrderTraveral() function in our main() function, with binarySearchTree included as an argument. Once we begin inOrderTraversal(), we check if the current BST* is equal to "nullptr". If it is not, we will recursively call inOrderTraversal() to read through the left side of the tree. Once we reach the leftmost item in the tree, we will print out that item. If we cannot go left, but can go right, we will recursively call inOrderTraversal() to the right. These recursive calls continue until binarySearchTree is equal to "nullptr", or when every item in the tree has been read and printed out. When the function is finished, every item in the tree should be printed out in alphabetical order. 
+
+\pagebreak
+
+\subsection{Binary Search Tree Lookup}
+We have successfully created our binary search tree. However, what if we want to find specific items in the tree? This is where binary search tree look ups come in. \\
+First, double check that "magicitems.txt" is closed, and open "magicitems-find-in-bst.txt". We will be searching the binary search tree for the items in this file. 
+\begin{lstlisting}
+// Searching the BST
+file.open("magicitems-find-in-bst.txt");
+
+// Failsafe in case the user does not have the file
+if (file.fail()) {
+    std::cout << "File failed to open" << std::endl;
+    /* Returning 1 indicates to the program that 
+    something has gone wrong */
+    return 1;
+}
+\end{lstlisting}
+With the file open, we can start searching binarySearchTree. We intend to keep track of the number of comparisons required to locate each item. As such, we will declare three variables at the top of the code document: BSTLocalNum, BSTComparisonNum, and itemsToFind. BSTLocalNum and BSTComparisonNum will be set to zero, while itemsToFind will be set to the number of items in "magicitems-find-in-bst.txt", 42. BSTLocalNum keeps track of the number of comparisons for each individual item; as such, it will be reset to zero every time we move on to a new item. In contrast, BSTComparisonNum will be employed to calculate the overall average number of comparisons among the 42 items. As such, it will continue to be incremented for every item we search for. 
+\begin{lstlisting}
+int BSTLocalNum = 0;
+int BSTComparisonNum = 0;
+int itemsToFind = 42;
+\end{lstlisting}
+\begin{lstlisting}
+std::cout << "\nSearching the Binary Search Tree: " 
+    << std::endl;
+while (std::getline(file, target)) {
+    /* Resets the comparison count for an item to 
+    zero every time we start a new search */
+    BSTLocalNum = 0;
+
+    /* The loop turns all the letters to lowercase. If 
+    this is not done, the items with a lowercase first 
+    letter will be automatically placed at the end of 
+    the tree instead of sorted into their proper 
+    alphabetical order. */
+    for (int i = 0; i < target.length(); i++) {
+        if (target[i] != ' ') {
+            // Converts characters to lowercase
+            target[i] = tolower(target[i]);
+        }
+    }
+
+    std::cout << target << ": ";
+    searchBST(binarySearchTree, target);
+    std::cout << "\nTotal Comparisons: " 
+        << BSTLocalNum << std::endl;
+}
+\end{lstlisting}
+We next begin to read through every line in "magicitems-find-in-bst.txt", store the line in "target", and convert all characters in "target" to lowercase (see "Inserting into the Tree", p. 20-21, for a more in-depth explanation of why we do this). Once we have the lowercase version of "target", we can send it and binarySearchTree to the searchBST() function. 
+
+\begin{lstlisting}
+BST* searchBST (BST* binarySearchTree, 
+    std::string item){
+    // If binarySearchTree is null (nothing there)
+    if (binarySearchTree == nullptr){
+        BSTLocalNum++;
+        BSTComparisonNum++;
+        std::cout << "\nItem not found" << std::endl;
+        return binarySearchTree;
+    }
+    
+    // If the item is at binarySearchTree
+    if (binarySearchTree->item == item){
+        BSTLocalNum++;
+        BSTComparisonNum++;
+        return binarySearchTree;
+    }
+
+    /* If the target item is greater than the 
+    binarySearchTree's item */
+    if(binarySearchTree->item < item){
+        BSTLocalNum++;
+        BSTComparisonNum++;
+        std::cout << "R, ";
+        return searchBST(binarySearchTree->right,item);
+    }
+
+    /* Otherwise, the target item is smaller than the 
+    binarySearchTree's item */
+    BSTLocalNum++;
+    BSTComparisonNum++;
+    std::cout << "L, ";
+    return searchBST(binarySearchTree->left, item);
+}
+\end{lstlisting}
+When beginning the function, we first check to see if binarySearchTree is empty. If it is empty, then the item cannot be found, and the program informs the user as such. searchBST() then ends by returning binarySearchTree. However, if binarySearchTree is not equal to "nullptr", we continue on to the next "if" statements in the function. \\
+If the item at the current binarySearchTree index is equal to the current item, then we have successfully located the item. searchBST() ends by returning binarySearchTree. \\
+However, if binarySearchTree is not equal to "nullptr" and we have not yet located the item, we must determine whether the current item is greater than or less than the item at the current vertex. If the current item is greater, we print "R" to indicate that we are moving to the right of the vertex. We then recursively call searchBST() to continue the search. On the other hand, if the current item is less than the item at the current vertex, then we must move to the left of the current vertex. The program prints "L" and recursively returns searchBST() to continue the search. \\
+As a final reminder, do not forget to increment BSTLocalNum and BSTComparisonNum every time we make a comparison! Forgetting to do so will skew our calculations for the asymptotic running time. Once we find the item, we can print the number of comparisons it took to locate it. \\
+
+\underline{\textit{Results}} \\
+
+Once we have located all of our items, we should have the final BSTComparisonNum for all 42 items. In order to get the average number of comparisons, we can divide BSTComparisonNum by itemsToFind, or 42.
+\begin{lstlisting}
+/* Don't forget to close the file now that we are done 
+with "magicitems-find-in-bst.txt" */
+file.close();
+
+/* 42 items to look up, so we can divide our total 
+comparisons by 42 to get the average */
+float avgComparisons = BSTComparisonNum / itemsToFind;
+std::cout << "\nOverall Average Comparisons for Binary 
+    Search Tree Lookup: " << avgComparisons 
+    << std::endl;
+\end{lstlisting}
+\pagebreak
+The value of BSTComparisonNum is 462. If we divide 462 by 42, we get...
+\begin{center}
+    462 / 42 = 11.00
+\end{center}
+As such, it takes an average of 11 comparisons in order to locate an item in our binary search tree. \\
+In order to calculate the asymptotic running time it takes to locate an item in our binary search tree, we can use the equation O(log\textsubscript{2}n), where n is the number of nodes in the tree. The equation is log\textsubscript{2}n due to the fact that we rule out half the tree every time we make a comparison. If we have 666 items, then...
+\begin{center}
+    O(log\textsubscript{2}n) = O(log\textsubscript{2}666) = 9.38
+\end{center}
+This might be concerning. Our average comparison count is 11, which is 1.62, or 17.27\%, greater than 9.38. However, O(log\textsubscript{2}n) assumes that the binary search tree is balanced. We do not know if our tree is balanced. In fact, since it is not designed to be balanced, it is likely that it is skewed slightly to either the left or right. This adds one or two comparisons for certain items, which adds up over time. In light of this, it is perfectly reasonable to be off by 17.27\%. As such, we can reasonably conclude that our binarySearchTree and searchBST() function are functioning correctly.
+
+\end{document}

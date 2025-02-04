@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://bk7x1xytts86d"]
+
+[ext_resource type="Script" path="res://land_enemy.gd" id="1_qb1ub"]
+[ext_resource type="Texture2D" uid="uid://dwukgkmsoq4em" path="res://PNG/Enemies/enemyFloating_1.png" id="2_c613k"]
+[ext_resource type="Texture2D" uid="uid://syn7qcr8dku5" path="res://PNG/Enemies/enemyFloating_2.png" id="3_kym57"]
+[ext_resource type="Texture2D" uid="uid://bth5ujysetan5" path="res://PNG/Enemies/enemyFloating_3.png" id="4_ud8yq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kend6"]
+size = Vector2(38, 38)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r4x15"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_c613k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_kym57")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ud8yq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_kym57")
+}],
+"loop": true,
+"name": &"float",
+"speed": 5.0
+}]
+
+[node name="LandEnemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_qb1ub")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_kend6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_r4x15")
+animation = &"float"
+
+[node name="FloorDetector" type="RayCast2D" parent="."]
+position = Vector2(22, 0)
+collision_mask = 2

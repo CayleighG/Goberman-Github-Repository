@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="phaser.js"></script>
+     
+        <script src="scene1.js"></script>
+        <script src="scene2.js"></script>
+         <script src="functions.js"></script>
+       
+    </head>
+    <body>
+        <div id="game"></div>
+        <script>
+
+          console.log("The game has started!")
+
+var config = {
+    type: Phaser.AUTO,
+    width: 600, 
+    height: 480,
+    parent: 'School Maze',
+   physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } }, scene: [SceneOne, SceneTwo]};
+var game = new Phaser.Game(config);
+var player //just declaring this here so we can use the variable in both our create() and update() functions
+var mainSprite
+var keySpace  //declared variable for spacebar
+var keyW
+var keyA
+var keyS
+var keyD
+var bullet
+var doortouching
+var timedEvent
+var timedEvent2
+var allowShoot = true
+var shootPowerUp = true
+var facingLeft = false
+var facingRight = false
+var placeholderInInventory = false
+var spawnX
+var spawnY
+var mapArea 
+var bossProjectile
+var angleBoss
+var activebossProjectiles = false;
+var bossProjectileList = [];
+var bossHealth = 100
+var playerHealth = 100
+var cBossAlive = true;
+var bBossAlive = true
+var hBossAlive = true
+var canMove = true
+var talkingToNPC = false
+var playerInventory = []
+var detectKeyIDown = false
+var itemsToFind = {item1:"Placeholder Item 1", item2:"Placeholder Item 2", item3:"Placeholder Item 3", item4: "laser" }
+var listOfBosses = [computerBossVar, bookBossVar]
+var remainingBosses = 2
+var defeatedBosses = []
+var computerBossVar
+var bookBossVar  //<-- Remember this is here
+var currentBoss
+var bossActive = false
+var projectileType = "wiresProjectile"
+var areaText
+var textEvent
+var textDisplayed=true;
+splashScreenVisible = true
+var area;
+var lobby;
+          var currentBossRef;
+          var deg;
+var bossProjectileVelocityX
+var bossProjectileVelocityY
+var vec
+          var heatseeker = false
+var timedEvent1
+var timedEvent2
+var timedEvent3
+var timedEvent4
+var pressSpaceToStartText
+var hasMoved = false
+        
+console.log(" o/ \\o")
+console.log("/|   |\\")
+console.log("/ \\ / \\")
+          
+        </script>
+    </body>
+</html>

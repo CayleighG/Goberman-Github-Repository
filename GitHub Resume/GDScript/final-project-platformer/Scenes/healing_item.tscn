@@ -1,0 +1,59 @@
+[gd_scene load_steps=12 format=3 uid="uid://bblnwwvoxs32f"]
+
+[ext_resource type="Texture2D" uid="uid://5h2akgdga0sq" path="res://PNGs/Healing Item/Healing Item-1.png.png" id="1_3io0o"]
+[ext_resource type="Script" path="res://scripts/healing_item.gd" id="1_o1iee"]
+[ext_resource type="Texture2D" uid="uid://pv1jcs2m46jb" path="res://PNGs/Healing Item/Healing Item-2.png.png" id="2_s10qr"]
+[ext_resource type="Texture2D" uid="uid://dh5d37pjwkfyv" path="res://PNGs/Healing Item/Healing Item-3.png.png" id="3_gk335"]
+[ext_resource type="Texture2D" uid="uid://bw4rsrtb33msx" path="res://PNGs/Healing Item/Healing Item-4.png.png" id="4_qee3w"]
+[ext_resource type="Texture2D" uid="uid://ds04ynmjgvf0k" path="res://PNGs/Healing Item/Healing Item-5.png.png" id="5_jtij7"]
+[ext_resource type="Texture2D" uid="uid://cbxxo84ml0ibx" path="res://PNGs/Healing Item/Healing Item-6.png.png" id="6_rdqko"]
+[ext_resource type="Texture2D" uid="uid://c27rflmondfby" path="res://PNGs/Healing Item/Healing Item-7.png.png" id="7_o86uk"]
+[ext_resource type="Texture2D" uid="uid://dtvkolpl17t71" path="res://PNGs/Healing Item/Healing Item-8.png.png" id="8_2ney0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xo4us"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3io0o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_s10qr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_gk335")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_qee3w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jtij7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_rdqko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_o86uk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2ney0")
+}],
+"loop": true,
+"name": &"bob",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bbmdx"]
+radius = 11.0
+height = 50.0
+
+[node name="HealingItem" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_o1iee")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_xo4us")
+animation = &"bob"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_bbmdx")
