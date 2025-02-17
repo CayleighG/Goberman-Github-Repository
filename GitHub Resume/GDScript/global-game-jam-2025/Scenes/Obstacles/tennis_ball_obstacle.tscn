@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbbodc1yiadne"]
+
+[ext_resource type="Texture2D" uid="uid://bmjy1omlxgr3h" path="res://PNGs/Tennis Ball-1.png.png" id="1_yep4d"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lhqrv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_yep4d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xx5x5"]
+radius = 36.0
+
+[node name="TennisBallObstacle" type="CharacterBody2D"]
+collision_layer = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_lhqrv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xx5x5")

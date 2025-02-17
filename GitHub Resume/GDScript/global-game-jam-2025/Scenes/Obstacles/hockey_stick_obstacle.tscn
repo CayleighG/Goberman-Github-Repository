@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://burqu8leiefa5"]
+
+[ext_resource type="Texture2D" uid="uid://dpyf800n5ln7t" path="res://PNGs/Hockey Stick-1.png.png" id="1_52fct"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_au1vg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_52fct")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a65uj"]
+size = Vector2(108, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4rsky"]
+size = Vector2(15, 45)
+
+[node name="HockeyStickObstacle" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_layer = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_au1vg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6, -20)
+shape = SubResource("RectangleShape2D_a65uj")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-53.5, 1.5)
+shape = SubResource("RectangleShape2D_4rsky")

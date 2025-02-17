@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://drhlp1p7leg5u"]
+
+[ext_resource type="Texture2D" uid="uid://dlgl6syq3liuy" path="res://PNGs/notebook_obstacle.png" id="1_ht58h"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qqb7j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ht58h")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cycb0"]
+size = Vector2(28, 36)
+
+[node name="NotebookObstacle" type="CharacterBody2D"]
+scale = Vector2(4, 4)
+collision_layer = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qqb7j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_cycb0")

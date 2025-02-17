@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxx24j3lg8xiq"]
+
+[ext_resource type="Texture2D" uid="uid://dfs7djxh64wh" path="res://PNGs/pencil_obstacle.png" id="1_ybjr2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vfsxe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ybjr2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jsmkk"]
+size = Vector2(51, 9)
+
+[node name="PencilObstacle" type="CharacterBody2D"]
+scale = Vector2(4, 4)
+collision_layer = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_vfsxe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, -0.5)
+shape = SubResource("RectangleShape2D_jsmkk")

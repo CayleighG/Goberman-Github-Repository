@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://mnfam7bctg0c"]
+
+[ext_resource type="Texture2D" uid="uid://befg600ppxkx0" path="res://PNGs/DoorOpen.png" id="1_owsxp"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_axugx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_owsxp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lwugj"]
+size = Vector2(16, 112)
+
+[node name="OpenDoor" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_axugx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-24, 8)
+shape = SubResource("RectangleShape2D_lwugj")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-8, 8)
+shape = SubResource("RectangleShape2D_lwugj")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_lwugj")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2(24, 8)
+shape = SubResource("RectangleShape2D_lwugj")

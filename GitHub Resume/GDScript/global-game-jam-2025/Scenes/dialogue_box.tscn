@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://bgkp5r3bcvbxr"]
+
+[ext_resource type="FontFile" uid="uid://bdrsaqqq87b0m" path="res://fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="1_3bdjg"]
+[ext_resource type="Script" path="res://Scripts/dialogue_box.gd" id="1_i64gv"]
+[ext_resource type="Script" path="res://Scripts/dialogue_update.gd" id="2_amnc6"]
+[ext_resource type="Script" path="res://Scripts/dialogue_lines.gd" id="3_hoyoo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5s0ol"]
+bg_color = Color(0.0509804, 0, 0.211765, 0.576471)
+
+[node name="dialogue_box" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i64gv")
+
+[node name="background" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 402.0
+offset_top = 377.0
+offset_right = 770.0
+offset_bottom = 541.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5s0ol")
+
+[node name="dialogue" type="RichTextLabel" parent="background"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 12.0
+offset_right = 353.0
+offset_bottom = 147.0
+theme_override_fonts/normal_font = ExtResource("1_3bdjg")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center]test[/center]"
+script = ExtResource("2_amnc6")
+
+[node name="dialogue_database" type="Node" parent="."]
+script = ExtResource("3_hoyoo")
+
+[connection signal="make_visible" from="background/dialogue" to="." method="_on_dialogue_make_visible"]
+[connection signal="send_line" from="dialogue_database" to="background/dialogue" method="_on_send_line"]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bs2iqck1us16u"]
+
+[ext_resource type="Texture2D" uid="uid://c4uoy3rgiywk0" path="res://PNGs/Football-1.png.png" id="1_j45y6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wtcf4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_j45y6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wpmtf"]
+radius = 24.0
+height = 112.0
+
+[node name="FootballObstacle" type="CharacterBody2D"]
+scale = Vector2(2, 2)
+collision_layer = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wtcf4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_wpmtf")

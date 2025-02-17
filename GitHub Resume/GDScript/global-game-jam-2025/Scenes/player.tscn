@@ -1,0 +1,412 @@
+[gd_scene load_steps=26 format=3 uid="uid://cq4fbcp710vj0"]
+
+[ext_resource type="Texture2D" uid="uid://dk2b6y301kvgk" path="res://PNGs/BabyIdle1.png" id="1_0ox6e"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_j5vgm"]
+[ext_resource type="Texture2D" uid="uid://xhgj2gxpt55c" path="res://PNGs/BabyIdle2.png" id="2_tkxeo"]
+[ext_resource type="Texture2D" uid="uid://li5kjwgchfdd" path="res://PNGs/BabyWalk1.png" id="3_v53jh"]
+[ext_resource type="Texture2D" uid="uid://b32m8r511th8h" path="res://PNGs/BabyJump.png" id="4_jd6wj"]
+[ext_resource type="Texture2D" uid="uid://sdtlqb4v8yoi" path="res://PNGs/BabyWalk2.png" id="4_juf2j"]
+[ext_resource type="Texture2D" uid="uid://bwtj2vnx34mqv" path="res://PNGs/BabyWalk3.png" id="5_7vrod"]
+[ext_resource type="Texture2D" uid="uid://2afm8xq2kelk" path="res://PNGs/ChildFloat.png" id="8_a6jq0"]
+[ext_resource type="Texture2D" uid="uid://dgakks28ndgdy" path="res://PNGs/TeenBubble.png" id="8_pa8c7"]
+[ext_resource type="Texture2D" uid="uid://bijd3gtvejao8" path="res://PNGs/TeenFloat.png" id="9_30qru"]
+[ext_resource type="Texture2D" uid="uid://cjtufc1m0cgod" path="res://PNGs/Enter Key.png" id="10_orl18"]
+[ext_resource type="FontFile" uid="uid://bdrsaqqq87b0m" path="res://fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="12_8uuil"]
+[ext_resource type="AudioStream" uid="uid://d27a2l002nthd" path="res://music/ethereal_world.mp3" id="13_h4ls0"]
+[ext_resource type="Script" path="res://Scenes/music_player.gd" id="14_jbt0k"]
+[ext_resource type="AudioStream" uid="uid://dw36syt6wtphg" path="res://music/reflected_light.mp3" id="15_g1ydj"]
+[ext_resource type="AudioStream" uid="uid://bqwd8tpevia3k" path="res://music/melancholic_piano_and_violin.mp3" id="16_tk4b6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p36w4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_0ox6e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_tkxeo")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_jd6wj")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_v53jh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_juf2j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7vrod")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_juf2j")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ht06y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_pa8c7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fs78a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_a6jq0")
+}],
+"loop": true,
+"name": &"float",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a6yc7"]
+radius = 41.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2bhu5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_30qru")
+}],
+"loop": true,
+"name": &"float",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tbgbg"]
+radius = 67.0075
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mv043"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_orl18")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qpvse"]
+radius = 22.0
+height = 104.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0feai"]
+bg_color = Color(0.0865891, 0.0915402, 0.249232, 1)
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+script = ExtResource("1_j5vgm")
+
+[node name="ChildSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_p36w4")
+animation = &"idle"
+
+[node name="Bubble1" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1.19209e-07, 68)
+scale = Vector2(0.410156, 0.410156)
+sprite_frames = SubResource("SpriteFrames_ht06y")
+
+[node name="PreteenSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fs78a")
+animation = &"float"
+
+[node name="Bubble1CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, 68)
+shape = SubResource("CircleShape2D_a6yc7")
+
+[node name="Bubble2" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.659912, 0.659912)
+sprite_frames = SubResource("SpriteFrames_ht06y")
+
+[node name="TeenSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2bhu5")
+animation = &"float"
+
+[node name="Bubble2CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_tbgbg")
+
+[node name="ExitPrompt" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -107)
+sprite_frames = SubResource("SpriteFrames_mv043")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 12)
+shape = SubResource("CapsuleShape2D_qpvse")
+
+[node name="HUD" type="Camera2D" parent="."]
+
+[node name="End" type="Label" parent="HUD"]
+offset_left = -194.0
+offset_top = -139.0
+offset_right = 195.0
+offset_bottom = -61.0
+theme_override_font_sizes/font_size = 56
+text = "End... For Now"
+horizontal_alignment = 1
+
+[node name="CloseGame" type="Label" parent="HUD"]
+offset_left = -113.0
+offset_top = -52.0
+offset_right = 115.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 20
+text = "Press Enter to Continue"
+horizontal_alignment = 1
+
+[node name="Credits" type="Label" parent="HUD"]
+offset_left = -239.0
+offset_top = -2.0
+offset_right = 242.0
+offset_bottom = 105.0
+text = "Credits:
+Background Pixel Art: Cassandra Dawson
+Writer: Gabriella Ganoe
+UI Engineering and Dialogue Implementation: Andrew Gearing
+Movement, Level Design, and Misc. Pixel Art: Cayleigh Goberman
+Main Pixel Art: Matthew DeMelo
+Ethereal World (Song 1) By Sergii Pavkin from Pixabay
+Reflected Light (Song 2) by Sergii Pavkin from Pixabay
+Melancholic Piano and Violin (Song 3) by Universfield from Pixabay
+"
+horizontal_alignment = 1
+
+[node name="TitleScreen" type="Label" parent="HUD"]
+offset_left = -197.0
+offset_top = -148.0
+offset_right = 197.0
+offset_bottom = -12.0
+theme_override_font_sizes/font_size = 50
+text = "Floating Dreams"
+
+[node name="PressEnterToStart" type="Label" parent="HUD"]
+offset_left = -75.0
+offset_top = 76.0
+offset_right = 75.0
+offset_bottom = 99.0
+text = "Press Enter to Start
+"
+
+[node name="ScoreBackground" type="Panel" parent="HUD"]
+offset_left = -577.0
+offset_top = -324.0
+offset_right = -91.0
+offset_bottom = -261.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0feai")
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+offset_left = -562.0
+offset_top = -314.0
+offset_right = -187.0
+offset_bottom = -259.0
+theme_override_fonts/font = ExtResource("12_8uuil")
+theme_override_font_sizes/font_size = 40
+text = "Bubbles Popped: "
+
+[node name="ExitDetector" type="RayCast2D" parent="."]
+position = Vector2(19, 0)
+target_position = Vector2(-43, 0)
+collision_mask = 4
+
+[node name="ChildBubbleDetectors" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(0, -39)
+collision_mask = 8
+
+[node name="RayCast2D2" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(25, -31)
+collision_mask = 8
+
+[node name="RayCast2D3" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(30, 0)
+collision_mask = 8
+
+[node name="RayCast2D4" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(22, 62)
+collision_mask = 8
+
+[node name="RayCast2D5" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(0, 63)
+collision_mask = 8
+
+[node name="RayCast2D6" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(-22, 62)
+collision_mask = 8
+
+[node name="RayCast2D7" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(-30, 0)
+collision_mask = 8
+
+[node name="RayCast2D8" type="RayCast2D" parent="ChildBubbleDetectors"]
+target_position = Vector2(-25, -31)
+collision_mask = 8
+
+[node name="PreteenBubbleDetectors" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(0, -38)
+collision_mask = 8
+
+[node name="RayCast2D2" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(16, -24)
+collision_mask = 8
+
+[node name="RayCast2D3" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(16, 0)
+collision_mask = 8
+
+[node name="RayCast2D4" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(40, 32)
+collision_mask = 8
+
+[node name="RayCast2D5" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(-19, -27)
+collision_mask = 8
+
+[node name="RayCast2D6" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(-24, 0)
+collision_mask = 8
+
+[node name="RayCast2D7" type="RayCast2D" parent="PreteenBubbleDetectors"]
+target_position = Vector2(-27, 31)
+collision_mask = 8
+
+[node name="RayCast2D8" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(0, -38)
+collision_mask = 8
+
+[node name="RayCast2D9" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(0, 45)
+collision_mask = 8
+
+[node name="RayCast2D10" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(40, 0)
+collision_mask = 8
+
+[node name="RayCast2D11" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(-40, 0)
+collision_mask = 8
+
+[node name="RayCast2D12" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(32, -24)
+collision_mask = 8
+
+[node name="RayCast2D13" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(-32, -24)
+collision_mask = 8
+
+[node name="RayCast2D14" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(32, 29)
+collision_mask = 8
+
+[node name="RayCast2D15" type="RayCast2D" parent="PreteenBubbleDetectors"]
+position = Vector2(0, 64)
+target_position = Vector2(-32, 29)
+collision_mask = 8
+
+[node name="TeenBubbleDetectors" type="Node2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="RayCast2D" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D2" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = 3.14159
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D3" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = 1.5708
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D4" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = 0.785398
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D5" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = 2.35619
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D6" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = 4.71239
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D7" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = -0.785398
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="RayCast2D8" type="RayCast2D" parent="TeenBubbleDetectors"]
+position = Vector2(0, -8)
+rotation = -2.35619
+target_position = Vector2(0, 67)
+collision_mask = 8
+
+[node name="GameOverTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="ScoreCooldownTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="Song1Player" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_h4ls0")
+parameters/looping = true
+script = ExtResource("14_jbt0k")
+song_number = 1
+
+[node name="Song2Player" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_g1ydj")
+parameters/looping = true
+script = ExtResource("14_jbt0k")
+song_number = 2
+
+[node name="Song3Player" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_tk4b6")
+parameters/looping = true
+script = ExtResource("14_jbt0k")
+song_number = 3
+
+[connection signal="send_current_level" from="." to="Song1Player" method="_on_player_send_current_level"]
+[connection signal="send_current_level" from="." to="Song2Player" method="_on_player_send_current_level"]
+[connection signal="send_current_level" from="." to="Song3Player" method="_on_player_send_current_level"]
+[connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
+[connection signal="timeout" from="ScoreCooldownTimer" to="." method="_on_score_cooldown_timer_timeout"]
